@@ -255,6 +255,12 @@
 
     <!-- Vista Plan Semanal -->
     <div class="view" id="plan">
+      <div style="margin-bottom:16px">
+        <button class="btn ghost small" onclick="showView('home')" style="display:inline-flex; align-items:center; gap:6px">
+          ← Volver al inicio
+        </button>
+      </div>
+      
       <div class="card">
         <div class="section-head">
           <h2>Tu Plan de Esta Semana</h2>
@@ -271,19 +277,119 @@
       
       <div class="card">
         <div class="section-head">
-          <h2>Calentamiento (Siempre)</h2>
+          <h2>Calentamiento (Siempre antes de empezar)</h2>
           <span class="chip">8-10 min</span>
         </div>
-        <ol>
-          <li>2-3 min de paseo ágil</li>
-          <li>Movilidad: círculos hombros y cadera, sentadilla parcial (6-8 reps)</li>
-          <li>Activación: puente glúteo 10, plancha inclinada 20-30s</li>
-        </ol>
+        
+        <div style="background:rgba(245,158,11,.1); padding:12px; border-radius:10px; border:1px solid rgba(245,158,11,.3); margin-bottom:16px">
+          <p style="margin:0; color:#fde68a; font-weight:600">⚠️ Nunca te saltes el calentamiento. Es tu seguro anti-lesiones.</p>
+        </div>
+        
+        <div style="display:grid; gap:12px">
+          <div style="padding:12px; background:rgba(255,255,255,.02); border-radius:8px; border:1px solid rgba(255,255,255,.08)">
+            <h4 style="margin:0 0 8px; color:var(--accent-2)">1. Activación Cardiovascular (2-3 min)</h4>
+            <p style="margin:0; font-size:.9rem">Paseo ágil por casa o al aire libre. Que el corazón se despierte gradualmente.</p>
+          </div>
+          
+          <div style="padding:12px; background:rgba(255,255,255,.02); border-radius:8px; border:1px solid rgba(255,255,255,.08)">
+            <h4 style="margin:0 0 8px; color:var(--accent-2)">2. Movilidad Articular (3-4 min)</h4>
+            <ul style="margin:8px 0; font-size:.9rem">
+              <li><strong>Hombros:</strong> 8 círculos adelante, 8 atrás</li>
+              <li><strong>Cadera:</strong> 8 círculos cada lado</li>
+              <li><strong>Sentadilla parcial:</strong> 6-8 reps, baja solo hasta donde puedas sin dolor</li>
+              <li><strong>Balanceos de brazos:</strong> 8 adelante y atrás</li>
+            </ul>
+          </div>
+          
+          <div style="padding:12px; background:rgba(255,255,255,.02); border-radius:8px; border:1px solid rgba(255,255,255,.08)">
+            <h4 style="margin:0 0 8px; color:var(--accent-2)">3. Activación Muscular (2-3 min)</h4>
+            <ul style="margin:8px 0; font-size:.9rem">
+              <li><strong>Puente de glúteo:</strong> 10 reps lentas, aprieta arriba 2s</li>
+              <li><strong>Plancha inclinada:</strong> 20-30s, manos en sofá/cama</li>
+              <li><strong>Activación core:</strong> 10 respiraciones profundas en plancha</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="section-head">
+          <h2>Detalles de Ejercicios</h2>
+          <span class="tag">Técnica correcta</span>
+        </div>
+        
+        <details>
+          <summary><strong>Flexiones Inclinadas</strong> - Tu ejercicio estrella 💪</summary>
+          <div style="padding:12px 0">
+            <p><strong>Posición:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Manos en sofá/cama/escalón, más alto = más fácil</li>
+              <li>Cuerpo recto desde cabeza a talones</li>
+              <li>Manos alineadas con el pecho, dedos separados</li>
+            </ul>
+            <p><strong>Ejecución:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Baja lento (2-3 segundos) hasta que el pecho casi toque</li>
+              <li>Sube fuerte pero controlado (1-2 segundos)</li>
+              <li>Respira: inspira bajando, expira subiendo</li>
+            </ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary><strong>Sentadilla a Caja</strong> - Piernas de guerrera 🦵</summary>
+          <div style="padding:12px 0">
+            <p><strong>Setup:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Caja/silla detrás, altura que puedas sentarte cómodamente</li>
+              <li>Pies ancho de hombros, puntas ligeramente hacia fuera</li>
+              <li>Brazos extendidos adelante para equilibrio</li>
+            </ul>
+            <p><strong>Movimiento:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Inicia movimiento sacando el trasero hacia atrás</li>
+              <li>Baja hasta tocar la caja suavemente (no te dejes caer)</li>
+              <li>Presiona talones para subir, glúteos apretados</li>
+            </ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary><strong>Comba/Saltos</strong> - Cardio divertido 🎯</summary>
+          <div style="padding:12px 0">
+            <p><strong>Técnica básica:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Saltos pequeños, solo despegar pies del suelo</li>
+              <li>Aterrizaje suave en metatarsos (no talones)</li>
+              <li>Codos pegados al cuerpo, solo mueven muñecas</li>
+              <li>Si no tienes comba: saltos en el sitio siguiendo el ritmo</li>
+            </ul>
+          </div>
+        </details>
+        
+        <details>
+          <summary><strong>Plancha</strong> - Core de acero 🛡️</summary>
+          <div style="padding:12px 0">
+            <p><strong>Posición perfecta:</strong></p>
+            <ul style="font-size:.9rem">
+              <li>Codos bajo hombros, antebrazos paralelos</li>
+              <li>Cuerpo recto: cabeza, hombros, cadera, talones alineados</li>
+              <li>Abdomen contraído, glúteos apretados</li>
+              <li>Respiración normal, no aguantes la respiración</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </div>
 
     <!-- Vista Timer -->
     <div class="view" id="timer">
+      <div style="margin-bottom:16px">
+        <button class="btn ghost small" onclick="showView('home')" style="display:inline-flex; align-items:center; gap:6px">
+          ← Volver al inicio
+        </button>
+      </div>
+      
       <div class="card">
         <div class="section-head">
           <h2>Timer de Comba</h2>
@@ -332,6 +438,12 @@
 
     <!-- Vista Progresiones -->
     <div class="view" id="progress">
+      <div style="margin-bottom:16px">
+        <button class="btn ghost small" onclick="showView('home')" style="display:inline-flex; align-items:center; gap:6px">
+          ← Volver al inicio
+        </button>
+      </div>
+      
       <div class="card">
         <div class="section-head">
           <h2>Progresión de Flexiones</h2>
@@ -385,6 +497,12 @@
 
     <!-- Vista Hábitos -->
     <div class="view" id="habits">
+      <div style="margin-bottom:16px">
+        <button class="btn ghost small" onclick="showView('home')" style="display:inline-flex; align-items:center; gap:6px">
+          ← Volver al inicio
+        </button>
+      </div>
+      
       <div class="card">
         <div class="section-head">
           <h2>Nutrición Smart</h2>
@@ -427,6 +545,12 @@
 
     <!-- Vista Mensajes de Amor -->
     <div class="view" id="love">
+      <div style="margin-bottom:16px">
+        <button class="btn ghost small" onclick="showView('home')" style="display:inline-flex; align-items:center; gap:6px">
+          ← Volver al inicio
+        </button>
+      </div>
+      
       <div class="card">
         <div class="section-head">
           <h2>Mensajes de Jose para ti</h2>
@@ -577,9 +701,13 @@
     const weekPlan = WEEK_PLANS[weekKey];
     
     // Actualizar elementos de la semana
-    document.getElementById('currentWeek').textContent = weekKey;
-    document.getElementById('weekFocus').textContent = weekPlan.focus;
-    document.getElementById('weekPhase').textContent = weekPlan.title;
+    const currentWeekEl = document.getElementById('currentWeek');
+    const weekFocusEl = document.getElementById('weekFocus');
+    const weekPhaseEl = document.getElementById('weekPhase');
+    
+    if (currentWeekEl) currentWeekEl.textContent = weekKey;
+    if (weekFocusEl) weekFocusEl.textContent = weekPlan.focus;
+    if (weekPhaseEl) weekPhaseEl.textContent = weekPlan.title;
     
     // Renderizar días en home
     const homeContainer = document.getElementById('weekTasks');
@@ -623,8 +751,11 @@
     const total = 5;
     const percentage = (completed / total) * 100;
     
-    document.getElementById('weekProgress').style.width = `${percentage}%`;
-    document.getElementById('completedDays').textContent = completed;
+    const weekProgressEl = document.getElementById('weekProgress');
+    const completedDaysEl = document.getElementById('completedDays');
+    
+    if (weekProgressEl) weekProgressEl.style.width = `${percentage}%`;
+    if (completedDaysEl) completedDaysEl.textContent = completed;
     
     updateFooter();
   }
@@ -636,6 +767,8 @@
     const todayIndex = dayMap[today];
     
     const container = document.getElementById('todayTask');
+    if (!container) return;
+    
     if (todayIndex !== undefined) {
       const weekKey = state.currentWeek <= 2 ? '1-2' : '3-4';
       const todayTask = WEEK_PLANS[weekKey].days[todayIndex];
@@ -673,31 +806,53 @@
     const scrim = document.getElementById('scrim');
     const closeMenuBtn = document.getElementById('closeMenu');
     
-    menuBtn.addEventListener('click', toggleMenu);
-    closeMenuBtn.addEventListener('click', closeMenu);
-    scrim.addEventListener('click', closeMenu);
+    if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+    if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
+    if (scrim) scrim.addEventListener('click', closeMenu);
     
-    // Footer
+    // Footer - funcionalidad simplificada y robusta
     const miniFooter = document.getElementById('miniFooter');
-    miniFooter.addEventListener('click', (e) => {
-      if (!miniFooter.classList.contains('expanded')) {
-        miniFooter.classList.add('expanded');
-        document.getElementById('footerArrow').textContent = '↘';
-      }
-    });
     
-    document.addEventListener('click', (e) => {
-      if (!miniFooter.contains(e.target) && miniFooter.classList.contains('expanded')) {
-        miniFooter.classList.remove('expanded');
-        document.getElementById('footerArrow').textContent = '↗';
-      }
-    });
+    if (miniFooter) {
+      // Click en todo el footer para expandir/contraer
+      miniFooter.addEventListener('click', (e) => {
+        // Solo expandir/contraer si se hace clic en el toggle, no en los botones
+        if (e.target.closest('.footer-controls')) {
+          return; // No hacer nada si se hace clic en los botones
+        }
+        
+        const isExpanded = miniFooter.classList.contains('expanded');
+        const footerArrow = document.getElementById('footerArrow');
+        
+        if (isExpanded) {
+          miniFooter.classList.remove('expanded');
+          if (footerArrow) footerArrow.textContent = '↗';
+        } else {
+          miniFooter.classList.add('expanded');
+          if (footerArrow) footerArrow.textContent = '↘';
+        }
+      });
+      
+      // Cerrar footer al hacer clic fuera
+      document.addEventListener('click', (e) => {
+        if (!miniFooter.contains(e.target) && miniFooter.classList.contains('expanded')) {
+          miniFooter.classList.remove('expanded');
+          const footerArrow = document.getElementById('footerArrow');
+          if (footerArrow) footerArrow.textContent = '↗';
+        }
+      });
+    }
     
-    document.getElementById('completeWeek').addEventListener('click', completeWeek);
-    document.getElementById('resetWeek').addEventListener('click', resetWeek);
+    // Botones del footer
+    const completeWeekBtn = document.getElementById('completeWeek');
+    const resetWeekBtn = document.getElementById('resetWeek');
+    
+    if (completeWeekBtn) completeWeekBtn.addEventListener('click', completeWeek);
+    if (resetWeekBtn) resetWeekBtn.addEventListener('click', resetWeek);
     
     // Mensajes de amor
-    document.getElementById('newLoveMsg').addEventListener('click', showLoveMessage);
+    const newLoveMsgBtn = document.getElementById('newLoveMsg');
+    if (newLoveMsgBtn) newLoveMsgBtn.addEventListener('click', showLoveMessage);
     
     // Auto-hide header
     setupHeaderAutoHide();
@@ -771,17 +926,26 @@
     const pauseBtn = document.getElementById('pauseBtn');
     const resetBtn = document.getElementById('resetBtn');
     const timerBar = document.getElementById('timerBar');
+    const onSec = document.getElementById('onSec');
+    const offSec = document.getElementById('offSec');
+    const rounds = document.getElementById('rounds');
+    const beep = document.getElementById('beep');
+    
+    // Verificar que todos los elementos existan
+    if (!display || !startBtn || !pauseBtn || !resetBtn || !timerBar || !onSec || !offSec || !rounds || !beep) {
+      return; // Salir si algún elemento no existe
+    }
     
     let ctx, osc;
     
     function updateDisplay() {
       const s = state.timerState;
       display.textContent = s.phase === 'idle' ? 'Preparada' : 
-        `${s.phase} • Ronda ${s.round}/${document.getElementById('rounds').value} • ${s.tLeft}s`;
+        `${s.phase} • Ronda ${s.round}/${rounds.value} • ${s.tLeft}s`;
     }
     
     function doBeep() {
-      const beepSetting = document.getElementById('beep').value;
+      const beepSetting = beep.value;
       if (beepSetting === 'off' || beepSetting === 'vibrate') return;
       
       try {
@@ -800,7 +964,7 @@
     }
     
     function doVibrate() {
-      const beepSetting = document.getElementById('beep').value;
+      const beepSetting = beep.value;
       if ((beepSetting === 'off' || beepSetting === 'beep') || !('vibrate' in navigator)) return;
       navigator.vibrate(state.timerState.phase === 'ON' ? [120, 40, 120] : 80);
     }
@@ -818,8 +982,8 @@
       
       state.timerState.tLeft--;
       const duration = state.timerState.phase === 'ON' ? 
-        parseInt(document.getElementById('onSec').value) : 
-        parseInt(document.getElementById('offSec').value);
+        parseInt(onSec.value) : 
+        parseInt(offSec.value);
       
       timerBar.style.width = `${((duration - state.timerState.tLeft) / duration) * 100}%`;
       updateDisplay();
@@ -832,7 +996,7 @@
     }
     
     function startOnOrFinish() {
-      const totalRounds = parseInt(document.getElementById('rounds').value);
+      const totalRounds = parseInt(rounds.value);
       if (state.timerState.round >= totalRounds) {
         display.textContent = '¡Completado! 🎉';
         showConfetti(40);
@@ -843,13 +1007,13 @@
       }
       
       state.timerState.round++;
-      setPhase('ON', parseInt(document.getElementById('onSec').value));
+      setPhase('ON', parseInt(onSec.value));
       timerBar.style.width = '0%';
       state.timerState.int = setInterval(tick, 1000);
     }
     
     function startOff() {
-      setPhase('OFF', parseInt(document.getElementById('offSec').value));
+      setPhase('OFF', parseInt(offSec.value));
       timerBar.style.width = '0%';
       state.timerState.int = setInterval(tick, 1000);
     }
@@ -896,6 +1060,8 @@
   // Progreso de flexiones
   function setupPushupProgress() {
     const steps = document.querySelectorAll('.step');
+    if (steps.length === 0) return; // Salir si no hay elementos
+    
     const saved = localStorage.getItem(STORAGE.PUSHUPS);
     const stepData = saved ? JSON.parse(saved) : {};
     
@@ -914,7 +1080,10 @@
   // Mostrar mensaje de amor
   function showLoveMessage() {
     const message = LOVE_MESSAGES[Math.floor(Math.random() * LOVE_MESSAGES.length)];
-    document.getElementById('loveMessage').textContent = message;
+    const loveMessageEl = document.getElementById('loveMessage');
+    if (loveMessageEl) {
+      loveMessageEl.textContent = message;
+    }
   }
 
   // Cerrar semana
@@ -942,8 +1111,11 @@
     const completed = Object.values(state.weekData).filter(Boolean).length;
     const weekKey = state.currentWeek <= 2 ? '1-2' : '3-4';
     
-    document.getElementById('footerWeek').textContent = weekKey;
-    document.getElementById('footerProgress').textContent = `${completed}/5 días`;
+    const footerWeekEl = document.getElementById('footerWeek');
+    const footerProgressEl = document.getElementById('footerProgress');
+    
+    if (footerWeekEl) footerWeekEl.textContent = weekKey;
+    if (footerProgressEl) footerProgressEl.textContent = `${completed}/5 días`;
   }
 
   // Confetti

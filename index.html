@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Rutina de 8 semanas, calistenia y comba para principiantes. Guía cariñosa de Jose con mensajes de ánimo." />
+  <meta name="theme-color" content="#7e22ce" />
+  <title>Guía Fitness de Jose 💜</title>
+  <style>
+    :root{
+      --bg:#0f0a14;            /* fondo muy oscuro para contraste alto */
+      --card:#171022;          /* tarjetas */
+      --text:#f7f5fb;          /* texto principal */
+      --muted:#cfc6db;         /* texto secundario */
+      --accent:#7e22ce;        /* morado */
+      --accent-2:#ec4899;      /* rosa */
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --shadow:0 10px 25px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;}
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.6; color:var(--text); background: radial-gradient(1200px 800px at 100% -10%, rgba(236,72,153,.08), transparent 60%),
+      radial-gradient(1200px 800px at -10% 110%, rgba(126,34,206,.09), transparent 60%), var(--bg);
+    }
+    header.hero{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(8px);
+      background: linear-gradient(90deg, rgba(126,34,206,.9), rgba(236,72,153,.9));
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .wrap{max-width:1000px;margin:0 auto;padding:16px}
+    .hero .wrap{display:flex; gap:16px; align-items:center; justify-content:space-between}
+    .title{
+      display:flex; gap:12px; align-items:center;
+    }
+    .title h1{margin:0; font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight:800}
+    .subtitle{margin:2px 0 0; font-size:.95rem; color:#fff; opacity:.9}
+    nav a{color:#fff; text-decoration:none; font-weight:600; padding:.55rem .85rem; border-radius:999px; border:1px solid rgba(255,255,255,.22)}
+    nav{display:flex; gap:8px; flex-wrap:wrap}
+    
+    .notice{
+      margin:18px 0 0; padding:10px 12px; background:rgba(255,255,255,.12); border-radius:12px; font-size:.9rem
+    }
+    main{padding: 22px 0 100px}
+    section{margin:18px 0}
+    h2{font-size: clamp(1.2rem, 2.4vw, 1.5rem)}
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
+    .grid{display:grid; gap:14px}
+    @media(min-width:880px){
+      .grid.cols-2{grid-template-columns:1fr 1fr}
+      .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    }
+
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(126,34,206,.15); border:1px solid rgba(126,34,206,.45); color:#e9def7; font-weight:600; font-size:.9rem}
+    .chip svg{width:18px; height:18px}
+
+    .btn{cursor:pointer; border:none; font-weight:800; letter-spacing:.2px; color:#fff; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); background:linear-gradient(135deg, var(--accent), var(--accent-2));}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.16)}
+    .btn.small{padding:8px 12px; font-weight:700}
+    .btn.block{display:block; width:100%}
+
+    details{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:10px 12px}
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:800}
+
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:rgba(236,72,153,.15); border:1px solid rgba(236,72,153,.4); color:#ffd9eb; font-weight:700}
+
+    .day{display:flex; align-items:flex-start; gap:12px; padding:10px; border-radius:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08)}
+    .day input[type="checkbox"]{margin-top:4px; transform:scale(1.2)}
+    .done{opacity:.65; text-decoration:line-through}
+
+    .timer{display:grid; gap:10px; justify-items:center}
+    .timer-display{font-size:2.5rem; font-weight:900; background:linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .timer-config{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; width:100%}
+    .timer-config label{display:flex; flex-direction:column; gap:4px; font-size:.9rem}
+    input[type="number"], input[type="text"], select{
+      background:#1e162a; color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:10px
+    }
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:.85rem; padding:2px 6px; border-radius:6px; background:#1e162a; border:1px solid rgba(255,255,255,.16)}
+
+    .progress{
+      height:10px; background:#231836; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.12)
+    }
+    .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2))}
+
+    .foot-msg{
+      position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:min(960px, calc(100% - 20px));
+      display:flex; align-items:center; gap:12px; background:linear-gradient(90deg, rgba(126,34,206,.9), rgba(236,72,153,.9));
+      border-radius:16px; padding:10px 12px; color:#fff; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.2)
+    }
+    .foot-msg p{margin:0; font-weight:700}
+    .foot-msg small{opacity:.9; font-weight:600}
+
+    .tag{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; background:#231836; border:1px solid rgba(255,255,255,.12); font-size:.85rem}
+    .tag.ok{border-color:rgba(34,197,94,.5); color:#bbf7d0}
+    .tag.warn{border-color:rgba(245,158,11,.5); color:#fde68a}
+
+    .section-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .section-head h2{margin:0}
+
+    .kbd-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+
+    footer{opacity:.75; font-size:.9rem; padding:40px 0}
+    
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="title">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="white" stroke-width="1.5"/><path d="M12 8V16M8 10L16 14" stroke="white" stroke-width="1.5"/></svg>
+        <div>
+          <h1>Guía Fitness de Jose para su Guerrera</h1>
+          <p class="subtitle">Calistenia + paseos + comba | Plan de 8 semanas | 18:00–20:00</p>
+        </div>
+      </div>
+      <nav>
+        <a href="#plan">Plan</a>
+        <a href="#timer">Timer</a>
+        <a href="#progresiones">Progresiones</a>
+        <a href="#habitos">Hábitos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Enfoque y reglas de oro</h2>
+        <span class="chip" aria-label="frecuencia">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 7v5l3 3"/></svg>
+          5 días/semana · 35–60 min
+        </span>
+      </div>
+      <p><strong>Objetivo:</strong> crear hábito, ganar fuerza básica y resistencia, favorecer una pérdida de peso <em>suave y sostenible</em>, y sobre todo sentirse bien 💜.</p>
+      <ul>
+        <li><strong>RPE 6–7/10:</strong> que cueste pero puedas hablar en frases cortas.</li>
+        <li><strong>Molestia muscular ≠ dolor articular:</strong> si duele la articulación, baja la dificultad o para.</li>
+        <li><strong>Hidratación y tarde:</strong> agua a mano, ropa ligera, snack 60–90 min antes (yogur + fruta / tostada con queso fresco).</li>
+      </ul>
+      <div class="notice">Consejo: si una semana estás muy cansada, reduce volumen (menos series/reps) y prioriza <strong>pasear</strong>. La consistencia gana 👑.</div>
+    </section>
+
+    <section id="plan" class="grid cols-2">
+      <article class="card">
+        <div class="section-head"><h2>Calentamiento (8–10 min)</h2></div>
+        <ol>
+          <li>2–3 min de paseo ágil.</li>
+          <li>Movilidad: círculos hombros y cadera, bisagra, sentadilla parcial, balanceos de brazos (6–8 reps).</li>
+          <li>Activación: 2 rondas — <strong>puente de glúteo</strong> 10, <strong>remo con toalla</strong> 10, <strong>plancha inclinada</strong> 20–30 s.</li>
+        </ol>
+        <p class="muted">Hazlo todos los días antes del bloque principal.</p>
+      </article>
+
+      <article class="card">
+        <div class="section-head"><h2>Plan semanal (Semanas 1–2)</h2><span class="tag warn">Base</span></div>
+        <div class="grid">
+          <label class="day"><input type="checkbox" data-day="Lun"><div><strong>Lunes – Empuje + core</strong><br>Flexiones <em>inclinadas</em> 3×6–8 · Press pared 3×15–20 s · Plancha 3×20–30 s · Paseo 10–15 min</div></label>
+          <label class="day"><input type="checkbox" data-day="Mar"><div><strong>Martes – Paseo + movilidad</strong><br>Paseo 30–45 min vivo · Estirar 10 min</div></label>
+          <label class="day"><input type="checkbox" data-day="Mié"><div><strong>Miércoles – Pierna + comba suave</strong><br>Sentadilla a caja 3×8–10 · Zancadas asistidas 3×6/lado · Comba 6×20 s / 40 s · Dead bug 2×6/lado</div></label>
+          <label class="day"><input type="checkbox" data-day="Jue"><div><strong>Jueves – Paseo + tirón</strong><br>Paseo 20–30 min · Remo invertido 3×6–8 · Face pull goma 2×12–15 · Movilidad hombros</div></label>
+          <label class="day"><input type="checkbox" data-day="Vie"><div><strong>Viernes – Circuito mixto</strong><br>4 rondas: Flexión inclinada 6–8 · Sentadilla a caja 8–10 · Comba 20–30 s · Plancha 20–30 s · + Paseo suave 10 min</div></label>
+        </div>
+        <div style="margin-top:12px">
+          <div class="progress" aria-label="Progreso semanal"><i id="weekProgress" style="width:0%"></i></div>
+          <small class="muted">Marca los días hechos. Se guarda en tu móvil automáticamente.</small>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid cols-2">
+      <article class="card">
+        <div class="section-head"><h2>Progresión por semanas (8 semanas)</h2><span class="tag">Suave ↑</span></div>
+        <details open>
+          <summary><strong>Semanas 1–2</strong> · Construir base</summary>
+          <p>Mantén rangos bajos y técnica perfecta. Aprende el ritmo.</p>
+        </details>
+        <details>
+          <summary><strong>Semanas 3–4</strong> · +Reps o +1 serie</summary>
+          <p>Suma 1–2 repeticiones por serie o añade 1 serie en el ejercicio que mejor vaya. Comba → 8×20–30 s.</p>
+        </details>
+        <details>
+          <summary><strong>Semana 5</strong> · <span class="pill">Ligera (~70% volumen)</span></summary>
+          <p>Reduce series/reps. Más paseo y movilidad. Que el cuerpo diga “gracias”.</p>
+        </details>
+        <details>
+          <summary><strong>Semanas 6–7</strong> · Subir dificultad</summary>
+          <ul>
+            <li>Flexiones: baja un poco la altura (más inclinación) o pasa de rodillas → inclinada suave.</li>
+            <li>Sentadillas: baja la caja o añade mochilita 2–4 kg.</li>
+            <li>Comba: 10×30 s (30–45 s descanso).</li>
+          </ul>
+        </details>
+        <details>
+          <summary><strong>Semana 8</strong> · Consolidar y marcar récords</summary>
+          <p>Mantén dificultad. Haz 1 serie “máxima técnica” de flexiones inclinadas, mejor tiempo de comba y plancha de 45–60 s.</p>
+        </details>
+      </article>
+
+      <article id="timer" class="card">
+        <div class="section-head"><h2>Timer de Comba</h2><span class="tag ok">Intervalos</span></div>
+        <div class="timer" role="region" aria-label="Temporizador de comba">
+          <div class="timer-display" id="display">Preparada</div>
+          <div class="timer-config">
+            <label>ON (seg)
+              <input id="onSec" type="number" min="5" max="120" step="5" value="20" />
+            </label>
+            <label>OFF (seg)
+              <input id="offSec" type="number" min="5" max="180" step="5" value="40" />
+            </label>
+            <label>Rondas
+              <input id="rounds" type="number" min="1" max="30" step="1" value="8" />
+            </label>
+            <label>Volumen/vibración
+              <select id="beep">
+                <option value="both">Beep + vibrar</option>
+                <option value="beep">Solo beep</option>
+                <option value="vibrate">Solo vibrar</option>
+                <option value="off">Silencio</option>
+              </select>
+            </label>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="btn" id="startBtn">Iniciar</button>
+            <button class="btn ghost" id="pauseBtn" disabled>Pausa</button>
+            <button class="btn ghost" id="resetBtn" disabled>Reiniciar</button>
+          </div>
+          <div class="progress" aria-label="Progreso del intervalo"><i id="timerBar"></i></div>
+          <small class="muted">Consejo: saltos bajitos, aterrizaje suave, codos pegados, giran las muñecas.</small>
+        </div>
+      </article>
+    </section>
+
+    <section id="progresiones" class="grid cols-2">
+      <article class="card">
+        <div class="section-head">
+          <h2>Progresión de flexiones (del 0 al suelo)</h2>
+          <span class="tag">Meta: 3×10</span>
+        </div>
+        <ol>
+          <li><label><input type="checkbox" class="step" data-step="1"> Pared</label></li>
+          <li><label><input type="checkbox" class="step" data-step="2"> Barra/banco alto</label></li>
+          <li><label><input type="checkbox" class="step" data-step="3"> Banco más bajo</label></li>
+          <li><label><input type="checkbox" class="step" data-step="4"> Rodillas</label></li>
+          <li><label><input type="checkbox" class="step" data-step="5"> Excéntricas suelo (bajar 3–4 s, subir por rodillas)</label></li>
+          <li><label><input type="checkbox" class="step" data-step="6"> Suelo asistidas (pies abiertos)</label></li>
+          <li><label><input type="checkbox" class="step" data-step="7"> Flexión completa</label></li>
+        </ol>
+        <small class="muted">Sube de peldaño cuando logres <strong>3×10</strong> limpias dos sesiones seguidas.</small>
+      </article>
+
+      <article class="card">
+        <div class="section-head"><h2>Alternativas sin material</h2></div>
+        <ul>
+          <li><strong>Tirón:</strong> toalla a farola/árbol para remo inclinado.</li>
+          <li><strong>Pierna:</strong> step-ups en banco 3×8/lado o puentes de glúteo 3×12–15.</li>
+          <li><strong>Carga:</strong> mochila con libros para sentadillas/step-ups o paseos del granjero 3×40–60 m.</li>
+        </ul>
+        <div class="kbd-row"><span class="kbd">Tip</span> Ancla la toalla con nudo de correa y sujétala con agarre neutro.</div>
+      </article>
+    </section>
+
+    <section id="habitos" class="grid cols-2">
+      <article class="card">
+        <div class="section-head"><h2>Nutrición y hábitos que más suman</h2><span class="tag ok">Sostenible</span></div>
+        <ul>
+          <li><strong>Déficit suave:</strong> ~300–500 kcal/día ⇒ 0,25–0,5 kg/semana.</li>
+          <li><strong>Plato post-entreno:</strong> ½ verduras, ¼ proteína (pollo, huevos, legumbres, yogur alto en proteína), ¼ carbo “gentil” (patata, arroz, pan integral).</li>
+          <li><strong>Proteína diaria:</strong> 1,2–1,6 g/kg de peso (referencia).</li>
+          <li><strong>Agua:</strong> 6–8 vasos/día; 1 botella en el paseo.</li>
+          <li><strong>Sueño:</strong> 7–9 h, misma hora de ir a la cama.</li>
+          <li><strong>NEAT:</strong> pasos diarios objetivo 7–10k (vuestros paseos cuentan).</li>
+          <li><strong>Registro rápido 1×/semana (si motiva):</strong> nº de flexiones actuales, tiempo de comba, plancha, medida de cintura o fotos (misma luz/ropa).</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="section-head"><h2>¿Cómo sabremos que va bien?</h2><span class="tag">Señales</span></div>
+        <ul>
+          <li>Cada 2 semanas: más reps con la misma dificultad, descansos más cortos y mejor control.</li>
+          <li>Ropa más suelta, más energía, sueño más profundo.</li>
+          <li>Si una semana pesa: bajad volumen y pasead más. <em>Consistencia &gt; perfección</em>.</li>
+        </ul>
+        <details>
+          <summary>Mini FAQ</summary>
+          <ul>
+            <li><strong>¿Solo hay 25–30 min?</strong> Haz el circuito del viernes + paseo 5–10 min.</li>
+            <li><strong>Rodilla molesta en sentadilla?</strong> Sube la altura de la caja, reduce rango y refuerza glúteo (puentes).</li>
+            <li><strong>¿Comba agobia?</strong> Alterna 10–20 saltos y 10–20 marchas en el sitio.</li>
+          </ul>
+        </details>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><h2>Notas de cariño de Jose</h2><span class="tag ok">Motivación</span></div>
+      <p>Guerrera, estoy contigo en cada paso. Si hoy cuesta, nos damos la mano y lo sacamos juntos. <strong>Yo sé que puedes</strong>. 💜 —Jose</p>
+      <div id="loveMsgs" class="grid"></div>
+      <button class="btn small" id="shuffleLove">Dame otro mensajito</button>
+    </section>
+
+    <footer class="wrap">
+      <p>⚠️ Esta guía es informativa y no sustituye consejo médico. Adapta cuando sea necesario y escucha tu cuerpo.</p>
+      <p>Hecho con amor por Jose. 💜</p>
+    </footer>
+  </main>
+
+  <div class="foot-msg" role="status" aria-live="polite">
+    <div><strong>Jose dice:</strong> <span id="footText">Hoy sumamos, aunque sea poquito. Estoy contigo. 💪💜</span><br><small id="footSmall">Marca tus días y mira cómo la barra avanza.</small></div>
+    <button class="btn small" id="clearWeek">Reiniciar semana</button>
+  </div>
+
+<script>
+(function(){
+  const dayBoxes = [...document.querySelectorAll('.day input[type="checkbox"]')];
+  const weekBar = document.getElementById('weekProgress');
+  const STORE_KEY = 'tp-routine-week-v1';
+
+  // Load saved week
+  const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+  dayBoxes.forEach(box => {
+    const d = box.dataset.day;
+    if(saved[d]){ box.checked = true; box.parentElement.classList.add('done'); }
+    box.addEventListener('change', () => {
+      saved[d] = box.checked;
+      box.parentElement.classList.toggle('done', box.checked);
+      localStorage.setItem(STORE_KEY, JSON.stringify(saved));
+      updateWeekBar();
+      if(box.checked) confetti(18);
+    });
+  });
+  function updateWeekBar(){
+    const done = dayBoxes.filter(b=>b.checked).length;
+    const pct = Math.round((done / dayBoxes.length) * 100);
+    weekBar.style.width = pct + '%';
+    document.getElementById('footSmall').textContent = `Llevas ${done}/${dayBoxes.length} días. ¡Brava!`;
+  }
+  updateWeekBar();
+  document.getElementById('clearWeek').addEventListener('click', ()=>{
+    dayBoxes.forEach(b=>{b.checked=false; b.parentElement.classList.remove('done');});
+    localStorage.removeItem(STORE_KEY);
+    updateWeekBar();
+  });
+
+  // Flex push-up steps persist
+  const STEP_KEY='tp-pushup-steps-v1';
+  const steps = document.querySelectorAll('.step');
+  const stepSaved = JSON.parse(localStorage.getItem(STEP_KEY) || '{}');
+  steps.forEach(s=>{
+    if(stepSaved[s.dataset.step]) s.checked = true;
+    s.addEventListener('change',()=>{
+      stepSaved[s.dataset.step]=s.checked; localStorage.setItem(STEP_KEY, JSON.stringify(stepSaved));
+    });
+  });
+
+  // Love messages
+  const love = [
+    'Eres constante y valiente. Estoy orgulloso de ti. 💜 —Jose',
+    'Hoy no hace falta ser perfecta, solo avanzar. A tu ritmo. —Jose',
+    'Cuando dudas, mírame: yo no dudo de ti. Puedes. —Jose',
+    'Cada salto de comba es un “sí” a tu fuerza. —Jose',
+    'Si el día pesa, te presto mis ganas. Vamos juntos. —Jose',
+    'Tu progreso es inevitable: estás haciendo el trabajo. —Jose',
+    'Respira, sonríe y confía. Estoy a tu lado. —Jose',
+    'Tu disciplina de hoy es tu orgullo de mañana. —Jose',
+  ];
+  const loveBox = document.getElementById('loveMsgs');
+  const shuffleLove = ()=>{
+    const msg = love[Math.floor(Math.random()*love.length)];
+    loveBox.innerHTML = `<div class="card" style="background:rgba(236,72,153,.12); border-color:rgba(236,72,153,.4)">${msg}</div>`;
+    document.getElementById('footText').textContent = msg.replace(' —Jose','');
+  };
+  shuffleLove();
+  document.getElementById('shuffleLove').addEventListener('click', shuffleLove);
+
+  // Simple confetti (tiny CSS squares)
+  function confetti(n=14){
+    const frag=document.createDocumentFragment();
+    for(let i=0;i<n;i++){
+      const c=document.createElement('i');
+      const size=Math.random()*6+4; c.style.position='fixed'; c.style.width=size+'px'; c.style.height=size+'px';
+      c.style.background = Math.random()>0.5? 'var(--accent)' : 'var(--accent-2)';
+      c.style.left=(Math.random()*100)+'%'; c.style.top='-20px'; c.style.opacity='.9'; c.style.transform='translateY(0)';
+      c.style.pointerEvents='none'; c.style.zIndex=2000; c.style.borderRadius='2px'; c.style.boxShadow='var(--shadow)';
+      document.body.appendChild(c);
+      const dy = window.innerHeight + 40; const dx=(Math.random()*40-20);
+      c.animate([
+        { transform:`translate(${dx}px, 0) rotate(0deg)` },
+        { transform:`translate(${dx*1.5}px, ${dy}px) rotate(${Math.random()*360}deg)` }
+      ], {duration:1200+Math.random()*800, easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>c.remove();
+    }
+  }
+
+  // Timer logic
+  const display = document.getElementById('display');
+  const onSec = document.getElementById('onSec');
+  const offSec= document.getElementById('offSec');
+  const rounds= document.getElementById('rounds');
+  const beepSel= document.getElementById('beep');
+  const startBtn=document.getElementById('startBtn');
+  const pauseBtn=document.getElementById('pauseBtn');
+  const resetBtn=document.getElementById('resetBtn');
+  const timerBar=document.getElementById('timerBar');
+
+  let state = { phase:'idle', tLeft:0, round:0, int:null, paused:false };
+  let ctx, osc;
+
+  function doBeep(){
+    if(beepSel.value==='off' || beepSel.value==='vibrate') return; // handled vibration separately
+    try{
+      ctx = ctx || new (window.AudioContext||window.webkitAudioContext)();
+      osc = ctx.createOscillator(); const gain = ctx.createGain();
+      osc.frequency.value = state.phase==='ON' ? 880 : 520; // higher on work
+      gain.gain.setValueAtTime(0.001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
+      osc.connect(gain).connect(ctx.destination); osc.start();
+      setTimeout(()=>{osc.stop();}, 150);
+    }catch(e){}
+  }
+  function doVibrate(){
+    if((beepSel.value==='off' || beepSel.value==='beep') || !('vibrate' in navigator)) return;
+    navigator.vibrate(state.phase==='ON' ? [120,40,120] : 80);
+  }
+
+  function setPhase(phase, seconds){
+    state.phase = phase; state.tLeft = seconds; updateDisplay();
+    doBeep(); doVibrate();
+  }
+  function updateDisplay(){
+    display.textContent = state.phase==='idle' ? 'Preparada' : `${state.phase} · Ronda ${state.round}/${+rounds.value} · ${state.tLeft}s`;
+  }
+  function tick(){
+    if(state.paused) return;
+    state.tLeft--; // 1 sec
+    const dur = (state.phase==='ON'?+onSec.value:+offSec.value);
+    timerBar.style.width = `${((dur-state.tLeft)/dur)*100}%`;
+    updateDisplay();
+    if(state.tLeft<=0){
+      clearInterval(state.int);
+      if(state.phase==='ON') startOff(); else startOnOrFinish();
+    }
+  }
+  function startOnOrFinish(){
+    if(state.round>=+rounds.value){
+      display.textContent = '¡Hecho! 🎉'; confetti(30); startBtn.disabled=false; pauseBtn.disabled=true; resetBtn.disabled=false; return;
+    }
+    state.round++; setPhase('ON', +onSec.value); timerBar.style.width='0%';
+    state.int = setInterval(tick, 1000);
+  }
+  function startOff(){ setPhase('OFF', +offSec.value); timerBar.style.width='0%'; state.int=setInterval(tick, 1000); }
+
+  startBtn.addEventListener('click', ()=>{
+    if(state.phase==='idle' || state.phase==='done'){
+      state.round=0; startOnOrFinish(); startBtn.disabled=true; pauseBtn.disabled=false; resetBtn.disabled=false;
+    } else if(state.paused){ state.paused=false; state.int=setInterval(tick,1000); pauseBtn.textContent='Pausa'; }
+  });
+  pauseBtn.addEventListener('click', ()=>{
+    if(state.phase==='idle') return;
+    state.paused=!state.paused;
+    if(state.paused){ clearInterval(state.int); pauseBtn.textContent='Reanudar'; }
+    else { state.int=setInterval(tick,1000); pauseBtn.textContent='Pausa'; }
+  });
+  resetBtn.addEventListener('click', ()=>{
+    clearInterval(state.int); state={phase:'idle', tLeft:0, round:0, int:null, paused:false}; timerBar.style.width='0%'; updateDisplay();
+    startBtn.disabled=false; pauseBtn.disabled=true; resetBtn.disabled=true;
+  });
+
+  // Keyboard accessibility
+  document.addEventListener('keydown', (e)=>{
+    if(e.key===' '){ e.preventDefault(); startBtn.click(); }
+    if(e.key==='p' || e.key==='P'){ pauseBtn.click(); }
+    if(e.key==='r' || e.key==='R'){ resetBtn.click(); }
+  });
+})();
+</script>
+</body>
+</html>

@@ -8,12 +8,12 @@
   <title>Guía Fitness de Jose 💜</title>
   <style>
     :root{
-      --bg:#0f0a14;            /* fondo muy oscuro para contraste alto */
-      --card:#171022;          /* tarjetas */
-      --text:#f7f5fb;          /* texto principal */
-      --muted:#cfc6db;         /* texto secundario */
-      --accent:#7e22ce;        /* morado */
-      --accent-2:#ec4899;      /* rosa */
+      --bg:#0f0a14;
+      --card:#171022;
+      --text:#f7f5fb;
+      --muted:#cfc6db;
+      --accent:#7e22ce;
+      --accent-2:#ec4899;
       --ok:#22c55e;
       --warn:#f59e0b;
       --danger:#ef4444;
@@ -27,249 +27,283 @@
       line-height:1.6; color:var(--text); background: radial-gradient(1200px 800px at 100% -10%, rgba(236,72,153,.08), transparent 60%),
       radial-gradient(1200px 800px at -10% 110%, rgba(126,34,206,.09), transparent 60%), var(--bg);
     }
+
+    /* Header mejorado */
     header.hero{
-      position:sticky; top:0; z-index:50; backdrop-filter: blur(8px);
-      background: linear-gradient(90deg, rgba(126,34,206,.9), rgba(236,72,153,.9));
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(12px);
+      background: linear-gradient(90deg, rgba(126,34,206,.92), rgba(236,72,153,.92));
       border-bottom:1px solid rgba(255,255,255,.12);
+      transition: transform .3s ease, opacity .3s ease;
     }
-    .wrap{max-width:1000px;margin:0 auto;padding:16px}
-    .hero .wrap{display:flex; gap:16px; align-items:center; justify-content:space-between}
-    .title{
-      display:flex; gap:12px; align-items:center;
-    }
-    .title h1{margin:0; font-size: clamp(1.15rem, 2.2vw, 1.6rem); font-weight:800}
-    .subtitle{margin:2px 0 0; font-size:.95rem; color:#fff; opacity:.9}
-    nav a{color:#fff; text-decoration:none; font-weight:600; padding:.55rem .85rem; border-radius:999px; border:1px solid rgba(255,255,255,.22)}
-    nav{display:flex; gap:8px; flex-wrap:wrap}
+    header.hero.hide{ transform: translateY(-100%); opacity: 0; }
     
-    .notice{
-      margin:18px 0 0; padding:10px 12px; background:rgba(255,255,255,.12); border-radius:12px; font-size:.9rem
+    .wrap{max-width:1000px;margin:0 auto;padding:16px}
+    .hero .wrap{display:flex; gap:12px; align-items:center; justify-content:space-between}
+    .title{display:flex; gap:12px; align-items:center; flex:1}
+    .title h1{margin:0; font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight:800}
+    .subtitle{margin:2px 0 0; font-size:.85rem; color:#fff; opacity:.9}
+
+    /* Hamburguesa mejorada */
+    .hamburger{
+      display:flex; align-items:center; justify-content:center; gap:6px; 
+      padding:8px; border-radius:10px; border:1px solid rgba(255,255,255,.2); 
+      background:rgba(255,255,255,.1); color:#fff; font-weight:600; font-size:.9rem;
+      backdrop-filter: blur(8px); cursor: pointer; transition: all .2s ease;
     }
-    main{padding: 22px 0 max(124px, env(safe-area-inset-bottom))}
-    section{margin:18px 0}
-    h2{font-size: clamp(1.2rem, 2.4vw, 1.5rem)}
-    .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
+    .hamburger:hover{ background:rgba(255,255,255,.15); transform: scale(1.02); }
+    .hamburger:active{ transform: scale(0.98); }
+    
+    .bars{position:relative; width:16px; height:2px; background:#fff; display:block; transition:.2s}
+    .bars::before, .bars::after{content:''; position:absolute; left:0; right:0; height:2px; background:#fff; transition:.2s}
+    .bars::before{top:-5px} .bars::after{top:5px}
+    .hamburger.active .bars{background:transparent}
+    .hamburger.active .bars::before{top:0; transform:rotate(45deg)}
+    .hamburger.active .bars::after{top:0; transform:rotate(-45deg)}
+
+    /* Panel móvil mejorado */
+    .mnav{
+      position:fixed; top:0; right:0; width:min(85%, 320px); height:100vh; 
+      background:var(--card); border-left:1px solid rgba(255,255,255,.15); 
+      box-shadow:var(--shadow); transform:translateX(100%); transition:transform .25s ease; 
+      z-index:60; padding:20px 16px; overflow:auto; backdrop-filter: blur(16px);
+    }
+    .mnav.open{transform:translateX(0)}
+    .mnav .nav-header{
+      display:flex; justify-content:space-between; align-items:center; 
+      margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,.1);
+    }
+    .mnav h3{margin:0; font-size:1.1rem; color:var(--accent)}
+    .close-btn{
+      background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.2); 
+      border-radius:8px; padding:4px 8px; font-size:.9rem; cursor:pointer;
+    }
+    .mnav a{
+      display:block; color:var(--text); text-decoration:none; padding:12px 16px; 
+      font-weight:600; border-radius:12px; background:rgba(255,255,255,.04); 
+      margin:8px 0; transition: all .2s ease; border:1px solid transparent;
+    }
+    .mnav a:hover{background:rgba(126,34,206,.15); border-color:rgba(126,34,206,.3)}
+    .mnav a.active{background:var(--accent); color:#fff}
+
+    .scrim{position:fixed; inset:0; background:rgba(0,0,0,.5); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:55}
+    .scrim.show{opacity:1; pointer-events:auto}
+    body.menu-open{overflow:hidden}
+
+    /* Navegación por vistas */
+    .view{display:none; min-height:calc(100vh - 120px)}
+    .view.active{display:block}
+    
+    main{padding: 20px 0 80px}
+    
+    /* Elementos UI mejorados */
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px; margin:12px 0}
     .grid{display:grid; gap:14px}
-    @media(min-width:880px){
-      .grid.cols-2{grid-template-columns:1fr 1fr}
-      .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-    }
+    @media(min-width:880px){.grid.cols-2{grid-template-columns:1fr 1fr}}
 
-    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:rgba(126,34,206,.15); border:1px solid rgba(126,34,206,.45); color:#e9def7; font-weight:600; font-size:.9rem}
-    .chip svg{width:18px; height:18px}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; background:rgba(126,34,206,.15); border:1px solid rgba(126,34,206,.45); color:#e9def7; font-weight:600; font-size:.85rem}
+    .btn{cursor:pointer; border:none; font-weight:700; color:#fff; padding:12px 18px; border-radius:12px; box-shadow:var(--shadow); background:linear-gradient(135deg, var(--accent), var(--accent-2)); transition: all .2s ease;}
+    .btn:hover{transform:translateY(-1px); box-shadow: 0 12px 30px rgba(0,0,0,.4)}
+    .btn:active{transform:translateY(0)}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.16); color:var(--text)}
+    .btn.small{padding:8px 14px; font-weight:600; font-size:.9rem}
 
-    .btn{cursor:pointer; border:none; font-weight:800; letter-spacing:.2px; color:#fff; padding:12px 16px; border-radius:12px; box-shadow:var(--shadow); background:linear-gradient(135deg, var(--accent), var(--accent-2));}
-    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,.16)}
-    .btn.small{padding:8px 12px; font-weight:700}
-    .btn.block{display:block; width:100%}
-
-    details{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:10px 12px}
-    details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:800}
-
-    .pill{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:rgba(236,72,153,.15); border:1px solid rgba(236,72,153,.4); color:#ffd9eb; font-weight:700}
-
-    .day{display:flex; align-items:flex-start; gap:12px; padding:10px; border-radius:10px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08)}
-    .day input[type="checkbox"]{margin-top:4px; transform:scale(1.2)}
-    .done{opacity:.65; text-decoration:line-through}
-
-    .timer{display:grid; gap:10px; justify-items:center}
-    .timer-display{font-size:2.5rem; font-weight:900; background:linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent}
-    .timer-config{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; width:100%}
-    .timer-config label{display:flex; flex-direction:column; gap:4px; font-size:.9rem}
-    input[type="number"], input[type="text"], select{
-      background:#1e162a; color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:10px
-    }
-    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:.85rem; padding:2px 6px; border-radius:6px; background:#1e162a; border:1px solid rgba(255,255,255,.16)}
-
-    .progress{
-      height:10px; background:#231836; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.12)
-    }
-    .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2))}
-
-    .foot-msg{position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:min(960px, calc(100% - 20px)); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background:linear-gradient(90deg, rgba(126,34,206,.92), rgba(236,72,153,.92)); border-radius:16px; padding:12px 12px calc(12px + env(safe-area-inset-bottom)) 12px; color:#fff; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.2)}
-    .foot-msg .btn{padding:10px 12px}
-    @media(max-width:520px){ .foot-msg{gap:8px} .foot-msg .btn{width:100%} }
-    .foot-msg p{margin:0; font-weight:700}
-    .foot-msg small{opacity:.9; font-weight:600}
-
-    .tag{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; background:#231836; border:1px solid rgba(255,255,255,.12); font-size:.85rem}
+    .tag{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:#231836; border:1px solid rgba(255,255,255,.12); font-size:.85rem; font-weight:600}
     .tag.ok{border-color:rgba(34,197,94,.5); color:#bbf7d0}
     .tag.warn{border-color:rgba(245,158,11,.5); color:#fde68a}
 
-    .section-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
-    .section-head h2{margin:0}
+    .section-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+    .section-head h2{margin:0; font-size:1.3rem}
 
-    .kbd-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
-
-    footer{opacity:.75; font-size:.9rem; padding:40px 0}
-    
-    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
-  
-    /* — Responsive header & clean blocks — */
-    html{scroll-behavior:smooth}
-    section[id]{scroll-margin-top:84px}
-    .hero .wrap{flex-wrap:wrap}
-    .divider{height:2px;background:linear-gradient(90deg, var(--accent), var(--accent-2));opacity:.35;border-radius:999px;margin:22px 0}
-    @media (max-width: 720px){
-      .hero .wrap{flex-direction:column; align-items:flex-start; gap:8px}
-      .title{gap:10px}
-      nav{width:100%; margin-top:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px}
-      nav a{white-space:nowrap; padding:.5rem .8rem}
-      .title h1{font-size:1.25rem}
-      .subtitle{font-size:.95rem}
+    /* Home/Dashboard mejorado */
+    .dashboard{text-align:center; padding:20px 0}
+    .week-card{
+      background:linear-gradient(135deg, rgba(126,34,206,.15), rgba(236,72,153,.15)); 
+      border:1px solid rgba(126,34,206,.3); border-radius:var(--radius); padding:24px; margin:20px 0;
     }
-    section{margin:26px 0}
-    .card{padding:18px}
-  
-    /* —— Hamburguesa + panel móvil + header autohide —— */
-    header.hero{ transition: transform .35s ease, box-shadow .2s ease; }
-    header.hero.hide{ transform: translateY(-100%); }
+    .week-number{font-size:2.2rem; font-weight:900; margin:0; background:linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .week-focus{font-size:1.1rem; color:var(--accent-2); margin:8px 0; font-weight:600}
 
-    .hamburger{display:none; align-items:center; gap:8px; padding:.55rem .8rem; border-radius:12px; border:1px solid rgba(255,255,255,.22); background:transparent; color:#fff; font-weight:800}
-    .hamburger .bars{position:relative; width:20px; height:2px; background:#fff; display:block}
-    .hamburger .bars::before, .hamburger .bars::after{content:''; position:absolute; left:0; right:0; height:2px; background:#fff}
-    .hamburger .bars::before{top:-6px} .hamburger .bars::after{top:6px}
+    .day-checklist{display:grid; gap:8px; margin:16px 0}
+    .day{display:flex; align-items:flex-start; gap:12px; padding:12px; border-radius:12px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); transition: all .2s ease}
+    .day:hover{background:rgba(255,255,255,.08)}
+    .day input[type="checkbox"]{margin-top:4px; transform:scale(1.3); accent-color:var(--accent)}
+    .day.done{opacity:.65; background:rgba(34,197,94,.1); border-color:rgba(34,197,94,.3)}
+    .day.done .day-content{text-decoration:line-through}
 
-    .desktop-nav{display:flex; gap:8px}
-    @media (max-width: 880px){ .desktop-nav{display:none} .hamburger{display:inline-flex} }
+    .progress{height:8px; background:#231836; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.12); margin:12px 0}
+    .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .3s ease}
 
-    .mnav{position:fixed; top:0; right:0; width:min(86%, 360px); height:100%; background:var(--card); border-left:1px solid rgba(255,255,255,.15); box-shadow:var(--shadow); transform:translateX(100%); transition:transform .25s ease; z-index:60; padding:12px; overflow:auto;}
-    .mnav.open{transform:translateX(0)}
-    .mnav a{display:block; color:var(--text); text-decoration:none; padding:10px 8px; font-weight:800; border-radius:10px; background:rgba(255,255,255,.04); margin:6px 0}
-    .mnav a:active{transform:translateY(1px)}
-    .mnav .close{position:absolute; top:10px; right:10px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.25); border-radius:10px; padding:6px 10px}
+    /* Timer mejorado */
+    .timer{display:grid; gap:12px; justify-items:center; text-align:center}
+    .timer-display{font-size:2.5rem; font-weight:900; background:linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip:text; background-clip:text; color:transparent; margin:8px 0}
+    .timer-config{display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; width:100%; margin:16px 0}
+    .timer-config label{display:flex; flex-direction:column; gap:6px; font-size:.9rem; font-weight:600}
+    input[type="number"], select{background:#1e162a; color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:8px; padding:10px; font-size:.9rem}
 
-    .scrim{position:fixed; inset:0; background:rgba(0,0,0,.42); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:55}
-    .scrim.show{opacity:1; pointer-events:auto}
-  
-    body.menu-open{overflow:hidden}
-    @media(max-width:420px){ .timer-display{font-size:2rem} }
+    .timer-controls{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+    
+    /* Footer mejorado - pequeño y desplegable */
+    .mini-footer{
+      position:fixed; bottom:12px; right:12px; z-index:45;
+      background:rgba(126,34,206,.9); border-radius:50px; padding:8px 12px;
+      box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.2);
+      cursor:pointer; transition: all .3s ease; backdrop-filter: blur(12px);
+    }
+    .mini-footer:hover{transform:scale(1.05)}
+    .mini-footer.expanded{
+      bottom:12px; right:12px; left:12px; border-radius:16px; padding:16px;
+      background:linear-gradient(90deg, rgba(126,34,206,.95), rgba(236,72,153,.95));
+    }
+    .footer-content{display:none}
+    .mini-footer.expanded .footer-content{display:block}
+    .footer-toggle{color:#fff; font-size:.9rem; font-weight:700; display:flex; align-items:center; gap:8px}
+    .footer-controls{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+    .footer-controls .btn{flex:1; min-width:120px}
+
+    @media(max-width:520px){
+      .timer-display{font-size:2rem}
+      .footer-controls{flex-direction:column}
+      .footer-controls .btn{width:100%}
+    }
+
+    details{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:12px; margin:8px 0}
+    summary{cursor:pointer; font-weight:700; padding:4px 0}
+
+    /* Animaciones y mejoras visuales */
+    @keyframes slideIn{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)}}
+    @keyframes pulse{0%, 100%{transform:scale(1)} 50%{transform:scale(1.02)}}
+    .view.active{animation:slideIn .4s ease-out}
+    .week-card:hover{animation:pulse 2s infinite}
+
+    /* Responsive mejoras */
+    @media(max-width:768px){
+      .wrap{padding:12px}
+      .hero .wrap{padding:12px; gap:10px}
+      .title h1{font-size:1.15rem}
+      .subtitle{font-size:.8rem}
+      .section-head{flex-direction:column; align-items:flex-start; gap:8px}
+    }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="wrap">
       <div class="title">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="white" stroke-width="1.5"/><path d="M12 8V16M8 10L16 14" stroke="white" stroke-width="1.5"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L20 7V17L12 22L4 17V7L12 2Z" stroke="white" stroke-width="1.5"/>
+          <path d="M12 8V16M8 10L16 14" stroke="white" stroke-width="1.5"/>
+        </svg>
         <div>
-          <h1>Guía Fitness de Jose para su Guerrera</h1>
-          <p class="subtitle">Calistenia + paseos + comba | Plan de 8 semanas | 18:00–20:00</p>
+          <h1>Tu Rutina con Jose</h1>
+          <p class="subtitle">8 semanas · Tu guerrera interior 💜</p>
         </div>
       </div>
-      <button class="hamburger" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><span class="bars" aria-hidden="true"></span> <span class="sr-only">Menú</span></button>
-      <nav class="desktop-nav">
-        <a href="#plan">Plan</a>
-        <a href="#timer">Timer</a>
-        <a href="#progresiones">Progresiones</a>
-        <a href="#habitos">Hábitos</a>
-      </nav>
+      <button class="hamburger" id="menuBtn" aria-label="Menú" aria-expanded="false" aria-controls="mnav">
+        <span class="bars" aria-hidden="true"></span>
+      </button>
     </div>
   </header>
 
-  <!-- Panel móvil -->
   <div class="scrim" id="scrim" hidden></div>
   <nav class="mnav" id="mnav" aria-hidden="true">
-    <button class="close" id="closeMenu" aria-label="Cerrar menú">✕</button>
-    <a href="#plan">Plan</a>
-    <a href="#timer">Timer</a>
-    <a href="#progresiones">Progresiones</a>
-    <a href="#habitos">Hábitos</a>
+    <div class="nav-header">
+      <h3>Navegación</h3>
+      <button class="close-btn" id="closeMenu" aria-label="Cerrar menú">✕</button>
+    </div>
+    <a href="#" data-view="home" class="nav-link active">🏠 Inicio</a>
+    <a href="#" data-view="plan" class="nav-link">📅 Mi Plan Semanal</a>
+    <a href="#" data-view="timer" class="nav-link">⏱️ Timer de Comba</a>
+    <a href="#" data-view="progress" class="nav-link">📈 Progresiones</a>
+    <a href="#" data-view="habits" class="nav-link">🥗 Hábitos & Tips</a>
+    <a href="#" data-view="love" class="nav-link">💜 Mensajes de Jose</a>
   </nav>
 
   <main class="wrap">
-
-    <section class="card">
-      <div class="section-head">
-        <h2>Enfoque y reglas de oro</h2>
-        <span class="chip" aria-label="frecuencia">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 7v5l3 3"/></svg>
-          5 días/semana · 35–60 min
-        </span>
+    <!-- Vista Home/Dashboard -->
+    <div class="view active" id="home">
+      <div class="dashboard">
+        <div class="week-card">
+          <div class="week-number">Semana <span id="currentWeek">1-2</span></div>
+          <div class="week-focus" id="weekFocus">Construir base y crear hábito</div>
+          
+          <div class="progress" aria-label="Progreso semanal">
+            <i id="weekProgress" style="width:0%"></i>
+          </div>
+          <p><span id="completedDays">0</span>/5 días completados</p>
+          
+          <div class="day-checklist" id="weekTasks"></div>
+        </div>
+        
+        <div class="card">
+          <h2>¿Qué hacer hoy?</h2>
+          <div id="todayTask">
+            <p>¡Revisa tu plan semanal para ver qué toca hoy! 💪</p>
+          </div>
+          <button class="btn" onclick="showView('plan')">Ver Plan Completo</button>
+        </div>
+        
+        <div class="card">
+          <h2>Acceso Rápido</h2>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn small" onclick="showView('timer')">⏱️ Timer</button>
+            <button class="btn small ghost" onclick="showView('progress')">📈 Progreso</button>
+            <button class="btn small ghost" onclick="showView('love')">💜 Ánimo</button>
+          </div>
+        </div>
       </div>
-      <p><strong>Objetivo:</strong> crear hábito, ganar fuerza básica y resistencia, favorecer una pérdida de peso <em>suave y sostenible</em>, y sobre todo sentirse bien 💜.</p>
-      <ul>
-        <li><strong>RPE 6–7/10:</strong> que cueste pero puedas hablar en frases cortas.</li>
-        <li><strong>Molestia muscular ≠ dolor articular:</strong> si duele la articulación, baja la dificultad o para.</li>
-        <li><strong>Hidratación y tarde:</strong> agua a mano, ropa ligera, snack 60–90 min antes (yogur + fruta / tostada con queso fresco).</li>
-      </ul>
-      <div class="notice">Consejo: si una semana estás muy cansada, reduce volumen (menos series/reps) y prioriza <strong>pasear</strong>. La consistencia gana 👑.</div>
-    </section>
-    <div class="divider" role="separator" aria-hidden="true"></div>
+    </div>
 
-    <section id="plan" class="grid cols-2">
-      <article class="card">
-        <div class="section-head"><h2>Calentamiento (8–10 min)</h2></div>
+    <!-- Vista Plan Semanal -->
+    <div class="view" id="plan">
+      <div class="card">
+        <div class="section-head">
+          <h2>Tu Plan de Esta Semana</h2>
+          <span class="tag warn" id="weekPhase">Semanas 1-2: Base</span>
+        </div>
+        
+        <div class="day-checklist" id="fullWeekPlan"></div>
+        
+        <div style="margin-top:20px; padding:16px; background:rgba(126,34,206,.1); border-radius:12px; border:1px solid rgba(126,34,206,.3)">
+          <h3 style="margin:0 0 8px; color:var(--accent-2)">Recordatorio de Jose:</h3>
+          <p style="margin:0"><strong>RPE 6-7/10:</strong> Que cueste pero puedas hablar. Si duele alguna articulación, para y baja intensidad. ¡Consistencia sobre perfección! 💜</p>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="section-head">
+          <h2>Calentamiento (Siempre)</h2>
+          <span class="chip">8-10 min</span>
+        </div>
         <ol>
-          <li>2–3 min de paseo ágil.</li>
-          <li>Movilidad: círculos hombros y cadera, bisagra, sentadilla parcial, balanceos de brazos (6–8 reps).</li>
-          <li>Activación: 2 rondas — <strong>puente de glúteo</strong> 10, <strong>remo con toalla</strong> 10, <strong>plancha inclinada</strong> 20–30 s.</li>
+          <li>2-3 min de paseo ágil</li>
+          <li>Movilidad: círculos hombros y cadera, sentadilla parcial (6-8 reps)</li>
+          <li>Activación: puente glúteo 10, plancha inclinada 20-30s</li>
         </ol>
-        <p class="muted">Hazlo todos los días antes del bloque principal.</p>
-      </article>
+      </div>
+    </div>
 
-      <article class="card">
-        <div class="section-head"><h2>Plan semanal (Semanas 1–2)</h2><span class="tag warn">Base</span></div>
-        <div class="grid">
-          <label class="day"><input type="checkbox" data-day="Lun"><div><strong>Lunes – Empuje + core</strong><br>Flexiones <em>inclinadas</em> 3×6–8 · Press pared 3×15–20 s · Plancha 3×20–30 s · Paseo 10–15 min</div></label>
-          <label class="day"><input type="checkbox" data-day="Mar"><div><strong>Martes – Paseo + movilidad</strong><br>Paseo 30–45 min vivo · Estirar 10 min</div></label>
-          <label class="day"><input type="checkbox" data-day="Mié"><div><strong>Miércoles – Pierna + comba suave</strong><br>Sentadilla a caja 3×8–10 · Zancadas asistidas 3×6/lado · Comba 6×20 s / 40 s · Dead bug 2×6/lado</div></label>
-          <label class="day"><input type="checkbox" data-day="Jue"><div><strong>Jueves – Paseo + tirón</strong><br>Paseo 20–30 min · Remo invertido 3×6–8 · Face pull goma 2×12–15 · Movilidad hombros</div></label>
-          <label class="day"><input type="checkbox" data-day="Vie"><div><strong>Viernes – Circuito mixto</strong><br>4 rondas: Flexión inclinada 6–8 · Sentadilla a caja 8–10 · Comba 20–30 s · Plancha 20–30 s · + Paseo suave 10 min</div></label>
+    <!-- Vista Timer -->
+    <div class="view" id="timer">
+      <div class="card">
+        <div class="section-head">
+          <h2>Timer de Comba</h2>
+          <span class="tag ok">Listo para usar</span>
         </div>
-        <div style="margin-top:12px">
-          <div class="progress" aria-label="Progreso semanal"><i id="weekProgress" style="width:0%"></i></div>
-          <small class="muted">Marca los días hechos. Se guarda en tu móvil automáticamente.</small>
-        </div>
-        <div class="kbd-row" style="margin-top:8px"><span class="tag ok">Semanas: <b id="weeksCount">0</b></span><small class="muted">&nbsp;Usa “Cerrar semana ✓” cuando cierres la semana.</small></div>
-      </article>
-    </section>
-    <div class="divider" role="separator" aria-hidden="true"></div>
-
-    <section class="grid cols-2">
-      <article class="card">
-        <div class="section-head"><h2>Progresión por semanas (8 semanas)</h2><span class="tag">Suave ↑</span></div>
-        <details open>
-          <summary><strong>Semanas 1–2</strong> · Construir base</summary>
-          <p>Mantén rangos bajos y técnica perfecta. Aprende el ritmo.</p>
-        </details>
-        <details>
-          <summary><strong>Semanas 3–4</strong> · +Reps o +1 serie</summary>
-          <p>Suma 1–2 repeticiones por serie o añade 1 serie en el ejercicio que mejor vaya. Comba → 8×20–30 s.</p>
-        </details>
-        <details>
-          <summary><strong>Semana 5</strong> · <span class="pill">Ligera (~70% volumen)</span></summary>
-          <p>Reduce series/reps. Más paseo y movilidad. Que el cuerpo diga “gracias”.</p>
-        </details>
-        <details>
-          <summary><strong>Semanas 6–7</strong> · Subir dificultad</summary>
-          <ul>
-            <li>Flexiones: baja un poco la altura (más inclinación) o pasa de rodillas → inclinada suave.</li>
-            <li>Sentadillas: baja la caja o añade mochilita 2–4 kg.</li>
-            <li>Comba: 10×30 s (30–45 s descanso).</li>
-          </ul>
-        </details>
-        <details>
-          <summary><strong>Semana 8</strong> · Consolidar y marcar récords</summary>
-          <p>Mantén dificultad. Haz 1 serie “máxima técnica” de flexiones inclinadas, mejor tiempo de comba y plancha de 45–60 s.</p>
-        </details>
-      </article>
-
-      <article id="timer" class="card">
-        <div class="section-head"><h2>Timer de Comba</h2><span class="tag ok">Intervalos</span></div>
-        <div class="timer" role="region" aria-label="Temporizador de comba">
+        
+        <div class="timer">
           <div class="timer-display" id="display">Preparada</div>
+          
           <div class="timer-config">
-            <label>ON (seg)
-              <input id="onSec" type="number" min="5" max="120" step="5" value="20" />
+            <label>Trabajo (seg)
+              <input id="onSec" type="number" min="10" max="60" step="5" value="20" />
             </label>
-            <label>OFF (seg)
-              <input id="offSec" type="number" min="5" max="180" step="5" value="40" />
+            <label>Descanso (seg)
+              <input id="offSec" type="number" min="10" max="120" step="5" value="40" />
             </label>
             <label>Rondas
-              <input id="rounds" type="number" min="1" max="30" step="1" value="8" />
+              <input id="rounds" type="number" min="1" max="15" step="1" value="6" />
             </label>
-            <label>Volumen/vibración
+            <label>Sonido
               <select id="beep">
                 <option value="both">Beep + vibrar</option>
                 <option value="beep">Solo beep</option>
@@ -278,288 +312,684 @@
               </select>
             </label>
           </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap">
-            <button class="btn" id="startBtn">Iniciar</button>
-            <button class="btn ghost" id="pauseBtn" disabled>Pausa</button>
-            <button class="btn ghost" id="resetBtn" disabled>Reiniciar</button>
+          
+          <div class="timer-controls">
+            <button class="btn" id="startBtn">▶️ Iniciar</button>
+            <button class="btn ghost" id="pauseBtn" disabled>⏸️ Pausa</button>
+            <button class="btn ghost" id="resetBtn" disabled>🔄 Reset</button>
           </div>
-          <div class="progress" aria-label="Progreso del intervalo"><i id="timerBar"></i></div>
-          <small class="muted">Consejo: saltos bajitos, aterrizaje suave, codos pegados, giran las muñecas.</small>
+          
+          <div class="progress" aria-label="Progreso del intervalo">
+            <i id="timerBar"></i>
+          </div>
+          
+          <div style="background:rgba(236,72,153,.1); padding:12px; border-radius:10px; margin-top:16px">
+            <p style="margin:0; font-size:.9rem"><strong>Consejo:</strong> Saltos bajitos, aterrizaje suave, codos pegados. ¡Tú puedes! 💪</p>
+          </div>
         </div>
-      </article>
-    </section>
+      </div>
+    </div>
 
-    <section id="progresiones" class="grid cols-2">
-      <article class="card">
+    <!-- Vista Progresiones -->
+    <div class="view" id="progress">
+      <div class="card">
         <div class="section-head">
-          <h2>Progresión de flexiones (del 0 al suelo)</h2>
+          <h2>Progresión de Flexiones</h2>
           <span class="tag">Meta: 3×10</span>
         </div>
-        <ol>
-          <li><label><input type="checkbox" class="step" data-step="1"> Pared</label></li>
-          <li><label><input type="checkbox" class="step" data-step="2"> Barra/banco alto</label></li>
-          <li><label><input type="checkbox" class="step" data-step="3"> Banco más bajo</label></li>
-          <li><label><input type="checkbox" class="step" data-step="4"> Rodillas</label></li>
-          <li><label><input type="checkbox" class="step" data-step="5"> Excéntricas suelo (bajar 3–4 s, subir por rodillas)</label></li>
-          <li><label><input type="checkbox" class="step" data-step="6"> Suelo asistidas (pies abiertos)</label></li>
-          <li><label><input type="checkbox" class="step" data-step="7"> Flexión completa</label></li>
-        </ol>
-        <small class="muted">Sube de peldaño cuando logres <strong>3×10</strong> limpias dos sesiones seguidas.</small>
-      </article>
-
-      <article class="card">
-        <div class="section-head"><h2>Alternativas sin material</h2></div>
-        <ul>
-          <li><strong>Tirón:</strong> toalla a farola/árbol para remo inclinado.</li>
-          <li><strong>Pierna:</strong> step-ups en banco 3×8/lado o puentes de glúteo 3×12–15.</li>
-          <li><strong>Carga:</strong> mochila con libros para sentadillas/step-ups o paseos del granjero 3×40–60 m.</li>
-        </ul>
-        <div class="kbd-row"><span class="kbd">Tip</span> Ancla la toalla con nudo de correa y sujétala con agarre neutro.</div>
-      </article>
-    </section>
-    <div class="divider" role="separator" aria-hidden="true"></div>
-
-    <section id="habitos" class="grid cols-2">
-      <article class="card">
-        <div class="section-head"><h2>Nutrición y hábitos que más suman</h2><span class="tag ok">Sostenible</span></div>
-        <ul>
-          <li><strong>Déficit suave:</strong> ~300–500 kcal/día ⇒ 0,25–0,5 kg/semana.</li>
-          <li><strong>Plato post-entreno:</strong> ½ verduras, ¼ proteína (pollo, huevos, legumbres, yogur alto en proteína), ¼ carbo “gentil” (patata, arroz, pan integral).</li>
-          <li><strong>Proteína diaria:</strong> 1,2–1,6 g/kg de peso (referencia).</li>
-          <li><strong>Agua:</strong> 6–8 vasos/día; 1 botella en el paseo.</li>
-          <li><strong>Sueño:</strong> 7–9 h, misma hora de ir a la cama.</li>
-          <li><strong>NEAT:</strong> pasos diarios objetivo 7–10k (vuestros paseos cuentan).</li>
-          <li><strong>Registro rápido 1×/semana (si motiva):</strong> nº de flexiones actuales, tiempo de comba, plancha, medida de cintura o fotos (misma luz/ropa).</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <div class="section-head"><h2>¿Cómo sabremos que va bien?</h2><span class="tag">Señales</span></div>
-        <ul>
-          <li>Cada 2 semanas: más reps con la misma dificultad, descansos más cortos y mejor control.</li>
-          <li>Ropa más suelta, más energía, sueño más profundo.</li>
-          <li>Si una semana pesa: bajad volumen y pasead más. <em>Consistencia &gt; perfección</em>.</li>
-        </ul>
+        <div style="background:rgba(255,255,255,.02); padding:16px; border-radius:12px; margin:12px 0">
+          <ol>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="1"> Flexiones en pared</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="2"> Barra/banco alto</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="3"> Banco más bajo</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="4"> En rodillas</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="5"> Excéntricas (bajar lento)</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="6"> Suelo asistidas</label></li>
+            <li><label style="display:flex; align-items:center; gap:8px; margin:6px 0"><input type="checkbox" class="step" data-step="7"> ¡Flexión completa!</label></li>
+          </ol>
+          <small style="color:var(--muted)">Sube de nivel cuando consigas 3×10 limpias en dos sesiones seguidas.</small>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="section-head">
+          <h2>Progresión por Semanas</h2>
+        </div>
+        
+        <details open>
+          <summary><strong>Semanas 1-2:</strong> Construir base</summary>
+          <p>Técnica perfecta, rangos bajos. Aprende el ritmo y crea el hábito.</p>
+        </details>
+        
         <details>
+          <summary><strong>Semanas 3-4:</strong> Más volumen</summary>
+          <p>Suma 1-2 reps por serie o añade 1 serie. Comba → 8×20-30s.</p>
+        </details>
+        
+        <details>
+          <summary><strong>Semana 5:</strong> Descanso activo</summary>
+          <p>Reduce a 70% del volumen. Más paseos y movilidad.</p>
+        </details>
+        
+        <details>
+          <summary><strong>Semanas 6-7:</strong> Subir dificultad</summary>
+          <p>Flexiones: baja altura. Sentadillas: baja caja. Comba: 10×30s.</p>
+        </details>
+        
+        <details>
+          <summary><strong>Semana 8:</strong> ¡Records personales!</summary>
+          <p>Mantén dificultad pero marca tus mejores tiempos y repeticiones.</p>
+        </details>
+      </div>
+    </div>
+
+    <!-- Vista Hábitos -->
+    <div class="view" id="habits">
+      <div class="card">
+        <div class="section-head">
+          <h2>Nutrición Smart</h2>
+          <span class="tag ok">Sostenible</span>
+        </div>
+        <ul style="list-style:none; padding:0">
+          <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,.1)">🍽️ <strong>Déficit suave:</strong> 300-500 kcal/día</li>
+          <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,.1)">🥗 <strong>Plato post-entreno:</strong> ½ verduras, ¼ proteína, ¼ carbos</li>
+          <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,.1)">🥛 <strong>Proteína:</strong> 1.2-1.6g/kg peso corporal</li>
+          <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,.1)">💧 <strong>Agua:</strong> 6-8 vasos/día</li>
+          <li style="padding:8px 0; border-bottom:1px solid rgba(255,255,255,.1)">😴 <strong>Sueño:</strong> 7-9h, horario fijo</li>
+          <li style="padding:8px 0">👟 <strong>Pasos:</strong> 7-10k diarios (vuestros paseos cuentan)</li>
+        </ul>
+      </div>
+      
+      <div class="card">
+        <div class="section-head">
+          <h2>¿Va bien el progreso?</h2>
+        </div>
+        <div style="background:rgba(34,197,94,.1); padding:16px; border-radius:12px; border:1px solid rgba(34,197,94,.3)">
+          <h4 style="margin:0 0 8px; color:#bbf7d0">✅ Señales positivas cada 2 semanas:</h4>
+          <ul style="margin:8px 0; color:#bbf7d0">
+            <li>Más repeticiones con misma dificultad</li>
+            <li>Descansos más cortos, mejor control</li>
+            <li>Ropa más suelta, más energía</li>
+            <li>Sueño más profundo</li>
+          </ul>
+        </div>
+        
+        <details style="margin-top:16px">
           <summary>Mini FAQ</summary>
           <ul>
-            <li><strong>¿Solo hay 25–30 min?</strong> Haz el circuito del viernes + paseo 5–10 min.</li>
-            <li><strong>Rodilla molesta en sentadilla?</strong> Sube la altura de la caja, reduce rango y refuerza glúteo (puentes).</li>
-            <li><strong>¿Comba agobia?</strong> Alterna 10–20 saltos y 10–20 marchas en el sitio.</li>
+            <li><strong>¿Solo 25-30 min disponibles?</strong> Haz el circuito del viernes + paseo 10 min.</li>
+            <li><strong>¿Rodilla molesta?</strong> Sube altura de caja, reduce rango, refuerza glúteo.</li>
+            <li><strong>¿La comba agobia?</strong> Alterna 10 saltos y 10 marchas en el sitio.</li>
           </ul>
         </details>
-      </article>
-    </section>
+      </div>
+    </div>
 
-    <div class="divider" role="separator" aria-hidden="true"></div>
-
-    <section class="card">
-      <div class="section-head"><h2>Notas de cariño de Jose</h2><span class="tag ok">Motivación</span></div>
-      <p>Guerrera, estoy contigo en cada paso. Si hoy cuesta, nos damos la mano y lo sacamos juntos. <strong>Yo sé que puedes</strong>. 💜 —Jose</p>
-      <div id="loveMsgs" class="grid"></div>
-      <button class="btn small" id="shuffleLove">Dame otro mensajito</button>
-    </section>
-
-    <footer class="wrap">
-      <p>⚠️ Esta guía es informativa y no sustituye consejo médico. Adapta cuando sea necesario y escucha tu cuerpo.</p>
-      <p>Hecho con amor por Jose. 💜</p>
-    </footer>
+    <!-- Vista Mensajes de Amor -->
+    <div class="view" id="love">
+      <div class="card">
+        <div class="section-head">
+          <h2>Mensajes de Jose para ti</h2>
+          <span class="tag ok">💜 Motivación</span>
+        </div>
+        
+        <div id="loveMsgContainer" style="min-height:120px; background:linear-gradient(135deg, rgba(236,72,153,.12), rgba(126,34,206,.12)); padding:20px; border-radius:16px; border:1px solid rgba(236,72,153,.3); text-align:center; margin:16px 0">
+          <p id="loveMessage" style="font-size:1.1rem; line-height:1.6; margin:0; color:#ffd9eb; font-weight:600"></p>
+          <small style="color:var(--accent-2); margin-top:12px; display:block">— Jose 💜</small>
+        </div>
+        
+        <div style="text-align:center">
+          <button class="btn" id="newLoveMsg">💜 Nuevo mensaje</button>
+        </div>
+        
+        <div style="background:rgba(255,255,255,.04); padding:16px; border-radius:12px; margin-top:20px">
+          <h4 style="margin:0 0 12px; color:var(--accent-2)">Recuerda siempre:</h4>
+          <p style="margin:0">Estoy contigo en cada paso. Si hoy cuesta, nos damos la mano y lo sacamos juntos. <strong>Yo sé que puedes</strong>. 💜</p>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <div class="foot-msg" role="status" aria-live="polite">
-    <div><strong>Jose dice:</strong> <span id="footText">Hoy sumamos, aunque sea poquito. Estoy contigo. 💪💜</span><br><small id="footSmall">Marca tus días y mira cómo la barra avanza.</small></div>
-    <button class="btn small" id="closeWeek">Cerrar semana ✓</button>
-    <button class="btn small" id="clearWeek">Reiniciar semana</button>
+  <!-- Footer mini desplegable -->
+  <div class="mini-footer" id="miniFooter">
+    <div class="footer-toggle">
+      <span id="footerText">Jose te acompaña 💜</span>
+      <span id="footerArrow">↗</span>
+    </div>
+    <div class="footer-content">
+      <p style="margin:0 0 8px; font-weight:600">¿Cómo va la semana?</p>
+      <small style="opacity:.9">Semana actual: <span id="footerWeek">1-2</span> | <span id="footerProgress">0/5 días</span></small>
+      <div class="footer-controls">
+        <button class="btn small" id="completeWeek">✅ Cerrar Semana</button>
+        <button class="btn small ghost" id="resetWeek">🔄 Reiniciar</button>
+      </div>
+    </div>
   </div>
 
 <script>
 (function(){
-  const dayBoxes = [...document.querySelectorAll('.day input[type="checkbox"]')];
-  const weekBar = document.getElementById('weekProgress');
-  const STORE_KEY = 'tp-routine-week-v1';
-
-  // Load saved week
-  const saved = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
-  dayBoxes.forEach(box => {
-    const d = box.dataset.day;
-    if(saved[d]){ box.checked = true; box.parentElement.classList.add('done'); }
-    box.addEventListener('change', () => {
-      saved[d] = box.checked;
-      box.parentElement.classList.toggle('done', box.checked);
-      localStorage.setItem(STORE_KEY, JSON.stringify(saved));
-      updateWeekBar();
-      if(box.checked) confetti(18);
-    });
-  });
-  function updateWeekBar(){
-    const done = dayBoxes.filter(b=>b.checked).length;
-    const pct = Math.round((done / dayBoxes.length) * 100);
-    weekBar.style.width = pct + '%';
-    document.getElementById('footSmall').textContent = `Llevas ${done}/${dayBoxes.length} días. ¡Brava!`;
-  }
-  updateWeekBar();
-  document.getElementById('clearWeek').addEventListener('click', ()=>{
-    dayBoxes.forEach(b=>{b.checked=false; b.parentElement.classList.remove('done');});
-    localStorage.removeItem(STORE_KEY);
-    updateWeekBar();
-  });
-
-  // Flex push-up steps persist
-  const STEP_KEY='tp-pushup-steps-v1';
-  const steps = document.querySelectorAll('.step');
-  const stepSaved = JSON.parse(localStorage.getItem(STEP_KEY) || '{}');
-  steps.forEach(s=>{
-    if(stepSaved[s.dataset.step]) s.checked = true;
-    s.addEventListener('change',()=>{
-      stepSaved[s.dataset.step]=s.checked; localStorage.setItem(STEP_KEY, JSON.stringify(stepSaved));
-    });
-  });
-
-  // Love messages
-  const love = [
-    'Eres constante y valiente. Estoy orgulloso de ti. 💜 —Jose',
-    'Hoy no hace falta ser perfecta, solo avanzar. A tu ritmo. —Jose',
-    'Cuando dudas, mírame: yo no dudo de ti. Puedes. —Jose',
-    'Cada salto de comba es un “sí” a tu fuerza. —Jose',
-    'Si el día pesa, te presto mis ganas. Vamos juntos. —Jose',
-    'Tu progreso es inevitable: estás haciendo el trabajo. —Jose',
-    'Respira, sonríe y confía. Estoy a tu lado. —Jose',
-    'Tu disciplina de hoy es tu orgullo de mañana. —Jose',
-  ];
-  const loveBox = document.getElementById('loveMsgs');
-  const shuffleLove = ()=>{
-    const msg = love[Math.floor(Math.random()*love.length)];
-    loveBox.innerHTML = `<div class="card" style="background:rgba(236,72,153,.12); border-color:rgba(236,72,153,.4)">${msg}</div>`;
-    document.getElementById('footText').textContent = msg.replace(' —Jose','');
-  };
-  shuffleLove();
-  document.getElementById('shuffleLove').addEventListener('click', shuffleLove);
-
-  // Simple confetti (tiny CSS squares)
-  function confetti(n=14){
-    const frag=document.createDocumentFragment();
-    for(let i=0;i<n;i++){
-      const c=document.createElement('i');
-      const size=Math.random()*6+4; c.style.position='fixed'; c.style.width=size+'px'; c.style.height=size+'px';
-      c.style.background = Math.random()>0.5? 'var(--accent)' : 'var(--accent-2)';
-      c.style.left=(Math.random()*100)+'%'; c.style.top='-20px'; c.style.opacity='.9'; c.style.transform='translateY(0)';
-      c.style.pointerEvents='none'; c.style.zIndex=2000; c.style.borderRadius='2px'; c.style.boxShadow='var(--shadow)';
-      document.body.appendChild(c);
-      const dy = window.innerHeight + 40; const dx=(Math.random()*40-20);
-      c.animate([
-        { transform:`translate(${dx}px, 0) rotate(0deg)` },
-        { transform:`translate(${dx*1.5}px, ${dy}px) rotate(${Math.random()*360}deg)` }
-      ], {duration:1200+Math.random()*800, easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>c.remove();
-    }
-  }
-
-  // Timer logic
-  const display = document.getElementById('display');
-  const onSec = document.getElementById('onSec');
-  const offSec= document.getElementById('offSec');
-  const rounds= document.getElementById('rounds');
-  const beepSel= document.getElementById('beep');
-  const startBtn=document.getElementById('startBtn');
-  const pauseBtn=document.getElementById('pauseBtn');
-  const resetBtn=document.getElementById('resetBtn');
-  const timerBar=document.getElementById('timerBar');
-
-  let state = { phase:'idle', tLeft:0, round:0, int:null, paused:false };
-  let ctx, osc;
-
-  function doBeep(){
-    if(beepSel.value==='off' || beepSel.value==='vibrate') return; // handled vibration separately
-    try{
-      ctx = ctx || new (window.AudioContext||window.webkitAudioContext)();
-      osc = ctx.createOscillator(); const gain = ctx.createGain();
-      osc.frequency.value = state.phase==='ON' ? 880 : 520; // higher on work
-      gain.gain.setValueAtTime(0.001, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime+0.01);
-      osc.connect(gain).connect(ctx.destination); osc.start();
-      setTimeout(()=>{osc.stop();}, 150);
-    }catch(e){}
-  }
-  function doVibrate(){
-    if((beepSel.value==='off' || beepSel.value==='beep') || !('vibrate' in navigator)) return;
-    navigator.vibrate(state.phase==='ON' ? [120,40,120] : 80);
-  }
-
-  function setPhase(phase, seconds){
-    state.phase = phase; state.tLeft = seconds; updateDisplay();
-    doBeep(); doVibrate();
-  }
-  function updateDisplay(){
-    display.textContent = state.phase==='idle' ? 'Preparada' : `${state.phase} · Ronda ${state.round}/${+rounds.value} · ${state.tLeft}s`;
-  }
-  function tick(){
-    if(state.paused) return;
-    state.tLeft--; // 1 sec
-    const dur = (state.phase==='ON'?+onSec.value:+offSec.value);
-    timerBar.style.width = `${((dur-state.tLeft)/dur)*100}%`;
-    updateDisplay();
-    if(state.tLeft<=0){
-      clearInterval(state.int);
-      if(state.phase==='ON') startOff(); else startOnOrFinish();
-    }
-  }
-  function startOnOrFinish(){
-    if(state.round>=+rounds.value){
-      display.textContent = '¡Hecho! 🎉'; confetti(30); startBtn.disabled=false; pauseBtn.disabled=true; resetBtn.disabled=false; return;
-    }
-    state.round++; setPhase('ON', +onSec.value); timerBar.style.width='0%';
-    state.int = setInterval(tick, 1000);
-  }
-  function startOff(){ setPhase('OFF', +offSec.value); timerBar.style.width='0%'; state.int=setInterval(tick, 1000); }
-
-  startBtn.addEventListener('click', ()=>{
-    if(state.phase==='idle' || state.phase==='done'){
-      state.round=0; startOnOrFinish(); startBtn.disabled=true; pauseBtn.disabled=false; resetBtn.disabled=false;
-    } else if(state.paused){ state.paused=false; state.int=setInterval(tick,1000); pauseBtn.textContent='Pausa'; }
-  });
-  pauseBtn.addEventListener('click', ()=>{
-    if(state.phase==='idle') return;
-    state.paused=!state.paused;
-    if(state.paused){ clearInterval(state.int); pauseBtn.textContent='Reanudar'; }
-    else { state.int=setInterval(tick,1000); pauseBtn.textContent='Pausa'; }
-  });
-  resetBtn.addEventListener('click', ()=>{
-    clearInterval(state.int); state={phase:'idle', tLeft:0, round:0, int:null, paused:false}; timerBar.style.width='0%'; updateDisplay();
-    startBtn.disabled=false; pauseBtn.disabled=true; resetBtn.disabled=true;
-  });
-
-  // Keyboard accessibility
-  document.addEventListener('keydown', (e)=>{
-    if(e.key===' '){ e.preventDefault(); startBtn.click(); }
-    if(e.key==='p' || e.key==='P'){ pauseBtn.click(); }
-    if(e.key==='r' || e.key==='R'){ resetBtn.click(); }
-  });
+  'use strict';
   
-  // — Hamburguesa + autohide header —
-  const hero = document.querySelector('header.hero');
-  const menuBtn = document.getElementById('menuBtn');
-  const mnav = document.getElementById('mnav');
-  const scrim = document.getElementById('scrim');
-  const closeMenuBtn = document.getElementById('closeMenu');
-  let menuOpen = false;
-  function openMenu(){ mnav.classList.add('open'); scrim.classList.add('show'); scrim.removeAttribute('hidden'); menuBtn && menuBtn.setAttribute('aria-expanded','true'); document.body.classList.add('menu-open'); menuOpen=true; }
-  function closeMenu(){ mnav.classList.remove('open'); scrim.classList.remove('show'); menuBtn && menuBtn.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); menuOpen=false; setTimeout(()=>scrim.setAttribute('hidden',''),200); }
-  menuBtn && menuBtn.addEventListener('click', ()=> menuOpen ? closeMenu() : openMenu());
-  closeMenuBtn && closeMenuBtn.addEventListener('click', closeMenu);
-  scrim && scrim.addEventListener('click', closeMenu);
-  mnav && mnav.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
-  let lastY = window.pageYOffset || 0; window.addEventListener('scroll', ()=>{ const y = window.pageYOffset || 0; const delta = y - lastY; if(menuOpen) { lastY=y; return; } if (y <= 10 || delta < -2){ hero.classList.remove('hide'); } else if (delta > 2){ hero.classList.add('hide'); } lastY = y; }, {passive:true});
+  // Estado global
+  const state = {
+    currentView: 'home',
+    currentWeek: 1,
+    weekData: {},
+    timerState: { phase:'idle', tLeft:0, round:0, int:null, paused:false }
+  };
+  
+  const STORAGE = {
+    WEEK: 'jose-routine-week-v2',
+    WEEK_NUM: 'jose-routine-week-num-v2',
+    PUSHUPS: 'jose-routine-pushups-v2'
+  };
 
-  // — Registro de semanas —
-  const WEEK_COUNT_KEY='tp-weeks-count-v1';
-  const weeksCountEl = document.getElementById('weeksCount');
-  function getWeeks(){ return parseInt(localStorage.getItem(WEEK_COUNT_KEY)||'0',10); }
-  function setWeeks(n){ localStorage.setItem(WEEK_COUNT_KEY, String(n)); if(weeksCountEl) weeksCountEl.textContent=n; updateFooterWeeks(); }
-  function updateFooterWeeks(){ const done = dayBoxes.filter(b=>b.checked).length; document.getElementById('footSmall').textContent = `Llevas ${done}/${dayBoxes.length} días · Semanas: ${getWeeks()}`; }
-  setWeeks(getWeeks());
-  const closeWeekBtn = document.getElementById('closeWeek');
-  closeWeekBtn && closeWeekBtn.addEventListener('click', ()=>{ setWeeks(getWeeks()+1); dayBoxes.forEach(b=>{b.checked=false; b.parentElement.classList.remove('done');}); localStorage.removeItem(STORE_KEY); updateWeekBar(); confetti(36); });
-  updateFooterWeeks(); dayBoxes.forEach(b=> b.addEventListener('change', updateFooterWeeks)); document.getElementById('clearWeek').addEventListener('click', updateFooterWeeks);
+  // Datos de las semanas
+  const WEEK_PLANS = {
+    '1-2': {
+      title: 'Semanas 1-2: Construir Base',
+      focus: 'Crear hábito y técnica básica',
+      days: [
+        { name: 'Lunes', desc: 'Empuje + Core', detail: 'Flexiones inclinadas 3×6-8 • Press pared 3×15-20s • Plancha 3×20-30s • Paseo 10-15min' },
+        { name: 'Martes', desc: 'Paseo + Movilidad', detail: 'Paseo 30-45min • Estiramientos 10min' },
+        { name: 'Miércoles', desc: 'Pierna + Comba', detail: 'Sentadilla a caja 3×8-10 • Zancadas 3×6/lado • Comba 6×20s/40s • Dead bug 2×6/lado' },
+        { name: 'Jueves', desc: 'Paseo + Tirón', detail: 'Paseo 20-30min • Remo invertido 3×6-8 • Face pull goma 2×12-15' },
+        { name: 'Viernes', desc: 'Circuito Mixto', detail: '4 rondas: Flexión inclinada 6-8 • Sentadilla 8-10 • Comba 20-30s • Plancha 20-30s + Paseo 10min' }
+      ]
+    },
+    '3-4': {
+      title: 'Semanas 3-4: Más Volumen',
+      focus: 'Aumentar repeticiones y series',
+      days: [
+        { name: 'Lunes', desc: 'Empuje + Core', detail: 'Flexiones inclinadas 3×8-10 • Press pared 4×20s • Plancha 3×30-40s • Paseo 15-20min' },
+        { name: 'Martes', desc: 'Paseo + Movilidad', detail: 'Paseo 35-50min • Estiramientos 12min' },
+        { name: 'Miércoles', desc: 'Pierna + Comba', detail: 'Sentadilla a caja 3×10-12 • Zancadas 3×8/lado • Comba 8×25s/35s • Dead bug 3×8/lado' },
+        { name: 'Jueves', desc: 'Paseo + Tirón', detail: 'Paseo 25-35min • Remo invertido 3×8-10 • Face pull goma 3×15' },
+        { name: 'Viernes', desc: 'Circuito Mixto', detail: '5 rondas: Flexión inclinada 8-10 • Sentadilla 10-12 • Comba 25-30s • Plancha 30-40s + Paseo 15min' }
+      ]
+    }
+  };
+
+  // Mensajes de amor de Jose
+  const LOVE_MESSAGES = [
+    'Eres constante y valiente. Estoy orgulloso de ti.',
+    'Hoy no hace falta ser perfecta, solo avanzar. A tu ritmo.',
+    'Cuando dudas, mírame: yo no dudo de ti. Puedes.',
+    'Cada salto de comba es un "sí" a tu fuerza.',
+    'Si el día pesa, te presto mis ganas. Vamos juntos.',
+    'Tu progreso es inevitable: estás haciendo el trabajo.',
+    'Respira, sonríe y confía. Estoy a tu lado.',
+    'Tu disciplina de hoy es tu orgullo de mañana.',
+    'Cada flexión te acerca más a tu guerrera interior.',
+    'No importa la velocidad, importa que no pares.',
+    'Eres más fuerte de lo que crees. Siempre lo has sido.',
+    'Hoy sumamos, aunque sea poquito. Cuenta todo.'
+  ];
+
+  // Inicialización
+  function init() {
+    loadWeekData();
+    setupEventListeners();
+    renderCurrentWeek();
+    setupTimer();
+    setupPushupProgress();
+    showLoveMessage();
+    updateFooter();
+  }
+
+  // Gestión de vistas
+  function showView(viewName) {
+    state.currentView = viewName;
+    
+    // Actualizar vistas
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewName).classList.add('active');
+    
+    // Actualizar navegación
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
+    
+    // Cerrar menú móvil
+    closeMenu();
+    
+    // Scroll al top suave
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // Cargar datos guardados
+  function loadWeekData() {
+    const saved = localStorage.getItem(STORAGE.WEEK);
+    state.weekData = saved ? JSON.parse(saved) : {};
+    
+    const weekNum = localStorage.getItem(STORAGE.WEEK_NUM);
+    state.currentWeek = weekNum ? parseInt(weekNum) : 1;
+  }
+
+  // Guardar datos
+  function saveWeekData() {
+    localStorage.setItem(STORAGE.WEEK, JSON.stringify(state.weekData));
+    localStorage.setItem(STORAGE.WEEK_NUM, state.currentWeek.toString());
+  }
+
+  // Renderizar semana actual
+  function renderCurrentWeek() {
+    const weekKey = state.currentWeek <= 2 ? '1-2' : '3-4';
+    const weekPlan = WEEK_PLANS[weekKey];
+    
+    // Actualizar elementos de la semana
+    document.getElementById('currentWeek').textContent = weekKey;
+    document.getElementById('weekFocus').textContent = weekPlan.focus;
+    document.getElementById('weekPhase').textContent = weekPlan.title;
+    
+    // Renderizar días en home
+    const homeContainer = document.getElementById('weekTasks');
+    const planContainer = document.getElementById('fullWeekPlan');
+    
+    [homeContainer, planContainer].forEach(container => {
+      if (!container) return;
+      
+      container.innerHTML = weekPlan.days.map((day, index) => `
+        <label class="day ${state.weekData[index] ? 'done' : ''}">
+          <input type="checkbox" data-day="${index}" ${state.weekData[index] ? 'checked' : ''}>
+          <div class="day-content">
+            <strong>${day.name} – ${day.desc}</strong><br>
+            <small style="color:var(--muted)">${day.detail}</small>
+          </div>
+        </label>
+      `).join('');
+      
+      // Event listeners para checkboxes
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const dayIndex = parseInt(e.target.dataset.day);
+          state.weekData[dayIndex] = e.target.checked;
+          
+          e.target.parentElement.classList.toggle('done', e.target.checked);
+          saveWeekData();
+          updateProgress();
+          
+          if (e.target.checked) showConfetti();
+        });
+      });
+    });
+    
+    updateProgress();
+    updateTodayTask();
+  }
+
+  // Actualizar progreso
+  function updateProgress() {
+    const completed = Object.values(state.weekData).filter(Boolean).length;
+    const total = 5;
+    const percentage = (completed / total) * 100;
+    
+    document.getElementById('weekProgress').style.width = `${percentage}%`;
+    document.getElementById('completedDays').textContent = completed;
+    
+    updateFooter();
+  }
+
+  // Actualizar tarea de hoy
+  function updateTodayTask() {
+    const today = new Date().getDay(); // 0 = domingo
+    const dayMap = {1: 0, 2: 1, 3: 2, 4: 3, 5: 4}; // lun-vie
+    const todayIndex = dayMap[today];
+    
+    const container = document.getElementById('todayTask');
+    if (todayIndex !== undefined) {
+      const weekKey = state.currentWeek <= 2 ? '1-2' : '3-4';
+      const todayTask = WEEK_PLANS[weekKey].days[todayIndex];
+      const isDone = state.weekData[todayIndex];
+      
+      container.innerHTML = `
+        <div style="padding:16px; background:${isDone ? 'rgba(34,197,94,.1)' : 'rgba(126,34,206,.1)'}; border-radius:12px; border:1px solid ${isDone ? 'rgba(34,197,94,.3)' : 'rgba(126,34,206,.3)'}">
+          <h4 style="margin:0 0 8px; color:${isDone ? '#bbf7d0' : 'var(--accent-2)'}">${isDone ? '✅' : '💪'} ${todayTask.name}</h4>
+          <p style="margin:0; font-weight:600">${todayTask.desc}</p>
+          <small style="color:var(--muted); margin-top:8px; display:block">${todayTask.detail}</small>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div style="padding:16px; background:rgba(245,158,11,.1); border-radius:12px; border:1px solid rgba(245,158,11,.3)">
+          <p style="margin:0; color:#fde68a">🌅 ¡Es fin de semana! Tiempo para paseos y descanso activo.</p>
+        </div>
+      `;
+    }
+  }
+
+  // Configurar event listeners
+  function setupEventListeners() {
+    // Navegación
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView(link.dataset.view);
+      });
+    });
+    
+    // Menú hamburguesa
+    const menuBtn = document.getElementById('menuBtn');
+    const mnav = document.getElementById('mnav');
+    const scrim = document.getElementById('scrim');
+    const closeMenuBtn = document.getElementById('closeMenu');
+    
+    menuBtn.addEventListener('click', toggleMenu);
+    closeMenuBtn.addEventListener('click', closeMenu);
+    scrim.addEventListener('click', closeMenu);
+    
+    // Footer
+    const miniFooter = document.getElementById('miniFooter');
+    miniFooter.addEventListener('click', (e) => {
+      if (!miniFooter.classList.contains('expanded')) {
+        miniFooter.classList.add('expanded');
+        document.getElementById('footerArrow').textContent = '↘';
+      }
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!miniFooter.contains(e.target) && miniFooter.classList.contains('expanded')) {
+        miniFooter.classList.remove('expanded');
+        document.getElementById('footerArrow').textContent = '↗';
+      }
+    });
+    
+    document.getElementById('completeWeek').addEventListener('click', completeWeek);
+    document.getElementById('resetWeek').addEventListener('click', resetWeek);
+    
+    // Mensajes de amor
+    document.getElementById('newLoveMsg').addEventListener('click', showLoveMessage);
+    
+    // Auto-hide header
+    setupHeaderAutoHide();
+  }
+
+  function toggleMenu() {
+    const menuBtn = document.getElementById('menuBtn');
+    const mnav = document.getElementById('mnav');
+    const scrim = document.getElementById('scrim');
+    
+    const isOpen = mnav.classList.contains('open');
+    
+    if (isOpen) {
+      closeMenu();
+    } else {
+      mnav.classList.add('open');
+      scrim.classList.add('show');
+      scrim.removeAttribute('hidden');
+      menuBtn.classList.add('active');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('menu-open');
+    }
+  }
+
+  function closeMenu() {
+    const menuBtn = document.getElementById('menuBtn');
+    const mnav = document.getElementById('mnav');
+    const scrim = document.getElementById('scrim');
+    
+    mnav.classList.remove('open');
+    scrim.classList.remove('show');
+    menuBtn.classList.remove('active');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+    
+    setTimeout(() => scrim.setAttribute('hidden', ''), 250);
+  }
+
+  // Auto-hide header mejorado
+  function setupHeaderAutoHide() {
+    let lastY = window.pageYOffset;
+    let ticking = false;
+    
+    function updateHeader() {
+      const currentY = window.pageYOffset;
+      const header = document.querySelector('header.hero');
+      const delta = currentY - lastY;
+      
+      if (currentY <= 50 || delta < -5) {
+        header.classList.remove('hide');
+      } else if (delta > 5 && currentY > 100) {
+        header.classList.add('hide');
+      }
+      
+      lastY = currentY;
+      ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateHeader);
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // Timer de comba
+  function setupTimer() {
+    const display = document.getElementById('display');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const timerBar = document.getElementById('timerBar');
+    
+    let ctx, osc;
+    
+    function updateDisplay() {
+      const s = state.timerState;
+      display.textContent = s.phase === 'idle' ? 'Preparada' : 
+        `${s.phase} • Ronda ${s.round}/${document.getElementById('rounds').value} • ${s.tLeft}s`;
+    }
+    
+    function doBeep() {
+      const beepSetting = document.getElementById('beep').value;
+      if (beepSetting === 'off' || beepSetting === 'vibrate') return;
+      
+      try {
+        ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+        osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        
+        osc.frequency.value = state.timerState.phase === 'ON' ? 880 : 520;
+        gain.gain.setValueAtTime(0.001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        
+        setTimeout(() => osc.stop(), 150);
+      } catch (e) {}
+    }
+    
+    function doVibrate() {
+      const beepSetting = document.getElementById('beep').value;
+      if ((beepSetting === 'off' || beepSetting === 'beep') || !('vibrate' in navigator)) return;
+      navigator.vibrate(state.timerState.phase === 'ON' ? [120, 40, 120] : 80);
+    }
+    
+    function setPhase(phase, seconds) {
+      state.timerState.phase = phase;
+      state.timerState.tLeft = seconds;
+      updateDisplay();
+      doBeep();
+      doVibrate();
+    }
+    
+    function tick() {
+      if (state.timerState.paused) return;
+      
+      state.timerState.tLeft--;
+      const duration = state.timerState.phase === 'ON' ? 
+        parseInt(document.getElementById('onSec').value) : 
+        parseInt(document.getElementById('offSec').value);
+      
+      timerBar.style.width = `${((duration - state.timerState.tLeft) / duration) * 100}%`;
+      updateDisplay();
+      
+      if (state.timerState.tLeft <= 0) {
+        clearInterval(state.timerState.int);
+        if (state.timerState.phase === 'ON') startOff();
+        else startOnOrFinish();
+      }
+    }
+    
+    function startOnOrFinish() {
+      const totalRounds = parseInt(document.getElementById('rounds').value);
+      if (state.timerState.round >= totalRounds) {
+        display.textContent = '¡Completado! 🎉';
+        showConfetti(40);
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        resetBtn.disabled = false;
+        return;
+      }
+      
+      state.timerState.round++;
+      setPhase('ON', parseInt(document.getElementById('onSec').value));
+      timerBar.style.width = '0%';
+      state.timerState.int = setInterval(tick, 1000);
+    }
+    
+    function startOff() {
+      setPhase('OFF', parseInt(document.getElementById('offSec').value));
+      timerBar.style.width = '0%';
+      state.timerState.int = setInterval(tick, 1000);
+    }
+    
+    startBtn.addEventListener('click', () => {
+      if (state.timerState.phase === 'idle') {
+        state.timerState.round = 0;
+        startOnOrFinish();
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        resetBtn.disabled = false;
+      } else if (state.timerState.paused) {
+        state.timerState.paused = false;
+        state.timerState.int = setInterval(tick, 1000);
+        pauseBtn.textContent = '⏸️ Pausa';
+      }
+    });
+    
+    pauseBtn.addEventListener('click', () => {
+      if (state.timerState.phase === 'idle') return;
+      
+      state.timerState.paused = !state.timerState.paused;
+      if (state.timerState.paused) {
+        clearInterval(state.timerState.int);
+        pauseBtn.textContent = '▶️ Reanudar';
+      } else {
+        state.timerState.int = setInterval(tick, 1000);
+        pauseBtn.textContent = '⏸️ Pausa';
+      }
+    });
+    
+    resetBtn.addEventListener('click', () => {
+      clearInterval(state.timerState.int);
+      state.timerState = { phase: 'idle', tLeft: 0, round: 0, int: null, paused: false };
+      timerBar.style.width = '0%';
+      updateDisplay();
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      resetBtn.disabled = true;
+      pauseBtn.textContent = '⏸️ Pausa';
+    });
+  }
+
+  // Progreso de flexiones
+  function setupPushupProgress() {
+    const steps = document.querySelectorAll('.step');
+    const saved = localStorage.getItem(STORAGE.PUSHUPS);
+    const stepData = saved ? JSON.parse(saved) : {};
+    
+    steps.forEach(step => {
+      if (stepData[step.dataset.step]) {
+        step.checked = true;
+      }
+      
+      step.addEventListener('change', () => {
+        stepData[step.dataset.step] = step.checked;
+        localStorage.setItem(STORAGE.PUSHUPS, JSON.stringify(stepData));
+      });
+    });
+  }
+
+  // Mostrar mensaje de amor
+  function showLoveMessage() {
+    const message = LOVE_MESSAGES[Math.floor(Math.random() * LOVE_MESSAGES.length)];
+    document.getElementById('loveMessage').textContent = message;
+  }
+
+  // Cerrar semana
+  function completeWeek() {
+    state.currentWeek++;
+    state.weekData = {};
+    saveWeekData();
+    renderCurrentWeek();
+    showConfetti(50);
+    
+    // Cerrar footer
+    document.getElementById('miniFooter').classList.remove('expanded');
+    document.getElementById('footerArrow').textContent = '↗';
+  }
+
+  // Resetear semana
+  function resetWeek() {
+    state.weekData = {};
+    saveWeekData();
+    renderCurrentWeek();
+  }
+
+  // Actualizar footer
+  function updateFooter() {
+    const completed = Object.values(state.weekData).filter(Boolean).length;
+    const weekKey = state.currentWeek <= 2 ? '1-2' : '3-4';
+    
+    document.getElementById('footerWeek').textContent = weekKey;
+    document.getElementById('footerProgress').textContent = `${completed}/5 días`;
+  }
+
+  // Confetti
+  function showConfetti(count = 20) {
+    const colors = ['var(--accent)', 'var(--accent-2)', '#22c55e'];
+    
+    for (let i = 0; i < count; i++) {
+      const confetti = document.createElement('div');
+      const size = Math.random() * 8 + 4;
+      
+      confetti.style.cssText = `
+        position: fixed;
+        width: ${size}px;
+        height: ${size}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        left: ${Math.random() * 100}%;
+        top: -20px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1000;
+      `;
+      
+      document.body.appendChild(confetti);
+      
+      const animation = confetti.animate([
+        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+        { transform: `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+      ], {
+        duration: 2000 + Math.random() * 1000,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      });
+      
+      animation.onfinish = () => confetti.remove();
+    }
+  }
+
+  // Navegación global
+  window.showView = showView;
+
+  // Inicializar cuando esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
 })();
 </script>
 </body>

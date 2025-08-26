@@ -45,7 +45,7 @@
     .notice{
       margin:18px 0 0; padding:10px 12px; background:rgba(255,255,255,.12); border-radius:12px; font-size:.9rem
     }
-    main{padding: 22px 0 100px}
+    main{padding: 22px 0 max(124px, env(safe-area-inset-bottom))}
     section{margin:18px 0}
     h2{font-size: clamp(1.2rem, 2.4vw, 1.5rem)}
     .card{background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px}
@@ -87,11 +87,9 @@
     }
     .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent-2))}
 
-    .foot-msg{
-      position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:min(960px, calc(100% - 20px));
-      display:flex; align-items:center; gap:12px; background:linear-gradient(90deg, rgba(126,34,206,.9), rgba(236,72,153,.9));
-      border-radius:16px; padding:10px 12px; color:#fff; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.2)
-    }
+    .foot-msg{position:fixed; bottom:10px; left:50%; transform:translateX(-50%); width:min(960px, calc(100% - 20px)); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background:linear-gradient(90deg, rgba(126,34,206,.92), rgba(236,72,153,.92)); border-radius:16px; padding:12px 12px calc(12px + env(safe-area-inset-bottom)) 12px; color:#fff; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,.2)}
+    .foot-msg .btn{padding:10px 12px}
+    @media(max-width:520px){ .foot-msg{gap:8px} .foot-msg .btn{width:100%} }
     .foot-msg p{margin:0; font-weight:700}
     .foot-msg small{opacity:.9; font-weight:600}
 
@@ -107,6 +105,46 @@
     footer{opacity:.75; font-size:.9rem; padding:40px 0}
     
     .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  
+    /* — Responsive header & clean blocks — */
+    html{scroll-behavior:smooth}
+    section[id]{scroll-margin-top:84px}
+    .hero .wrap{flex-wrap:wrap}
+    .divider{height:2px;background:linear-gradient(90deg, var(--accent), var(--accent-2));opacity:.35;border-radius:999px;margin:22px 0}
+    @media (max-width: 720px){
+      .hero .wrap{flex-direction:column; align-items:flex-start; gap:8px}
+      .title{gap:10px}
+      nav{width:100%; margin-top:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px}
+      nav a{white-space:nowrap; padding:.5rem .8rem}
+      .title h1{font-size:1.25rem}
+      .subtitle{font-size:.95rem}
+    }
+    section{margin:26px 0}
+    .card{padding:18px}
+  
+    /* —— Hamburguesa + panel móvil + header autohide —— */
+    header.hero{ transition: transform .35s ease, box-shadow .2s ease; }
+    header.hero.hide{ transform: translateY(-100%); }
+
+    .hamburger{display:none; align-items:center; gap:8px; padding:.55rem .8rem; border-radius:12px; border:1px solid rgba(255,255,255,.22); background:transparent; color:#fff; font-weight:800}
+    .hamburger .bars{position:relative; width:20px; height:2px; background:#fff; display:block}
+    .hamburger .bars::before, .hamburger .bars::after{content:''; position:absolute; left:0; right:0; height:2px; background:#fff}
+    .hamburger .bars::before{top:-6px} .hamburger .bars::after{top:6px}
+
+    .desktop-nav{display:flex; gap:8px}
+    @media (max-width: 880px){ .desktop-nav{display:none} .hamburger{display:inline-flex} }
+
+    .mnav{position:fixed; top:0; right:0; width:min(86%, 360px); height:100%; background:var(--card); border-left:1px solid rgba(255,255,255,.15); box-shadow:var(--shadow); transform:translateX(100%); transition:transform .25s ease; z-index:60; padding:12px; overflow:auto;}
+    .mnav.open{transform:translateX(0)}
+    .mnav a{display:block; color:var(--text); text-decoration:none; padding:10px 8px; font-weight:800; border-radius:10px; background:rgba(255,255,255,.04); margin:6px 0}
+    .mnav a:active{transform:translateY(1px)}
+    .mnav .close{position:absolute; top:10px; right:10px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.25); border-radius:10px; padding:6px 10px}
+
+    .scrim{position:fixed; inset:0; background:rgba(0,0,0,.42); backdrop-filter:blur(2px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:55}
+    .scrim.show{opacity:1; pointer-events:auto}
+  
+    body.menu-open{overflow:hidden}
+    @media(max-width:420px){ .timer-display{font-size:2rem} }
   </style>
 </head>
 <body>
@@ -119,7 +157,8 @@
           <p class="subtitle">Calistenia + paseos + comba | Plan de 8 semanas | 18:00–20:00</p>
         </div>
       </div>
-      <nav>
+      <button class="hamburger" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><span class="bars" aria-hidden="true"></span> <span class="sr-only">Menú</span></button>
+      <nav class="desktop-nav">
         <a href="#plan">Plan</a>
         <a href="#timer">Timer</a>
         <a href="#progresiones">Progresiones</a>
@@ -127,6 +166,16 @@
       </nav>
     </div>
   </header>
+
+  <!-- Panel móvil -->
+  <div class="scrim" id="scrim" hidden></div>
+  <nav class="mnav" id="mnav" aria-hidden="true">
+    <button class="close" id="closeMenu" aria-label="Cerrar menú">✕</button>
+    <a href="#plan">Plan</a>
+    <a href="#timer">Timer</a>
+    <a href="#progresiones">Progresiones</a>
+    <a href="#habitos">Hábitos</a>
+  </nav>
 
   <main class="wrap">
 
@@ -146,6 +195,7 @@
       </ul>
       <div class="notice">Consejo: si una semana estás muy cansada, reduce volumen (menos series/reps) y prioriza <strong>pasear</strong>. La consistencia gana 👑.</div>
     </section>
+    <div class="divider" role="separator" aria-hidden="true"></div>
 
     <section id="plan" class="grid cols-2">
       <article class="card">
@@ -171,8 +221,10 @@
           <div class="progress" aria-label="Progreso semanal"><i id="weekProgress" style="width:0%"></i></div>
           <small class="muted">Marca los días hechos. Se guarda en tu móvil automáticamente.</small>
         </div>
+        <div class="kbd-row" style="margin-top:8px"><span class="tag ok">Semanas: <b id="weeksCount">0</b></span><small class="muted">&nbsp;Usa “Cerrar semana ✓” cuando cierres la semana.</small></div>
       </article>
     </section>
+    <div class="divider" role="separator" aria-hidden="true"></div>
 
     <section class="grid cols-2">
       <article class="card">
@@ -265,6 +317,7 @@
         <div class="kbd-row"><span class="kbd">Tip</span> Ancla la toalla con nudo de correa y sujétala con agarre neutro.</div>
       </article>
     </section>
+    <div class="divider" role="separator" aria-hidden="true"></div>
 
     <section id="habitos" class="grid cols-2">
       <article class="card">
@@ -298,6 +351,8 @@
       </article>
     </section>
 
+    <div class="divider" role="separator" aria-hidden="true"></div>
+
     <section class="card">
       <div class="section-head"><h2>Notas de cariño de Jose</h2><span class="tag ok">Motivación</span></div>
       <p>Guerrera, estoy contigo en cada paso. Si hoy cuesta, nos damos la mano y lo sacamos juntos. <strong>Yo sé que puedes</strong>. 💜 —Jose</p>
@@ -313,6 +368,7 @@
 
   <div class="foot-msg" role="status" aria-live="polite">
     <div><strong>Jose dice:</strong> <span id="footText">Hoy sumamos, aunque sea poquito. Estoy contigo. 💪💜</span><br><small id="footSmall">Marca tus días y mira cómo la barra avanza.</small></div>
+    <button class="btn small" id="closeWeek">Cerrar semana ✓</button>
     <button class="btn small" id="clearWeek">Reiniciar semana</button>
   </div>
 
@@ -477,6 +533,33 @@
     if(e.key==='p' || e.key==='P'){ pauseBtn.click(); }
     if(e.key==='r' || e.key==='R'){ resetBtn.click(); }
   });
+  
+  // — Hamburguesa + autohide header —
+  const hero = document.querySelector('header.hero');
+  const menuBtn = document.getElementById('menuBtn');
+  const mnav = document.getElementById('mnav');
+  const scrim = document.getElementById('scrim');
+  const closeMenuBtn = document.getElementById('closeMenu');
+  let menuOpen = false;
+  function openMenu(){ mnav.classList.add('open'); scrim.classList.add('show'); scrim.removeAttribute('hidden'); menuBtn && menuBtn.setAttribute('aria-expanded','true'); document.body.classList.add('menu-open'); menuOpen=true; }
+  function closeMenu(){ mnav.classList.remove('open'); scrim.classList.remove('show'); menuBtn && menuBtn.setAttribute('aria-expanded','false'); document.body.classList.remove('menu-open'); menuOpen=false; setTimeout(()=>scrim.setAttribute('hidden',''),200); }
+  menuBtn && menuBtn.addEventListener('click', ()=> menuOpen ? closeMenu() : openMenu());
+  closeMenuBtn && closeMenuBtn.addEventListener('click', closeMenu);
+  scrim && scrim.addEventListener('click', closeMenu);
+  mnav && mnav.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+  let lastY = window.pageYOffset || 0; window.addEventListener('scroll', ()=>{ const y = window.pageYOffset || 0; const delta = y - lastY; if(menuOpen) { lastY=y; return; } if (y <= 10 || delta < -2){ hero.classList.remove('hide'); } else if (delta > 2){ hero.classList.add('hide'); } lastY = y; }, {passive:true});
+
+  // — Registro de semanas —
+  const WEEK_COUNT_KEY='tp-weeks-count-v1';
+  const weeksCountEl = document.getElementById('weeksCount');
+  function getWeeks(){ return parseInt(localStorage.getItem(WEEK_COUNT_KEY)||'0',10); }
+  function setWeeks(n){ localStorage.setItem(WEEK_COUNT_KEY, String(n)); if(weeksCountEl) weeksCountEl.textContent=n; updateFooterWeeks(); }
+  function updateFooterWeeks(){ const done = dayBoxes.filter(b=>b.checked).length; document.getElementById('footSmall').textContent = `Llevas ${done}/${dayBoxes.length} días · Semanas: ${getWeeks()}`; }
+  setWeeks(getWeeks());
+  const closeWeekBtn = document.getElementById('closeWeek');
+  closeWeekBtn && closeWeekBtn.addEventListener('click', ()=>{ setWeeks(getWeeks()+1); dayBoxes.forEach(b=>{b.checked=false; b.parentElement.classList.remove('done');}); localStorage.removeItem(STORE_KEY); updateWeekBar(); confetti(36); });
+  updateFooterWeeks(); dayBoxes.forEach(b=> b.addEventListener('change', updateFooterWeeks)); document.getElementById('clearWeek').addEventListener('click', updateFooterWeeks);
 })();
 </script>
 </body>
